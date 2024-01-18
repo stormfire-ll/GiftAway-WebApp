@@ -1,0 +1,28 @@
+/* Entfernt die Unterstreichungen und erhöht den Abstand */
+.navbar-nav .nav-item {
+    margin-right: 30px; /* Erhöht den horizontalen Abstand zwischen den Links */
+}
+
+.navbar-nav .nav-item .nav-link,
+.navbar-nav .nav-item a {
+    text-decoration: none; /* Entfernt die Unterstreichung */
+    font-size: 1.2em; /* Vergrößert die Schriftgröße */
+    color: #555; /* Setzt eine Farbe für den Text */
+}
+
+/* Vergrößert die Schriftgröße des Markennamens */
+.navbar-brand {
+    font-size: 1.5em; /* Vergrößert die Schriftgröße */
+    font-weight: bold; /* Macht den Text fett */
+}
+
+/* Stil für das Suchfeld und den Button */
+.form-control {
+    border-radius: 4px;
+    /* Weitere Stildefinitionen für das Suchfeld */
+}
+
+.btn-outline-success {
+    border-radius: 4px;
+    /* Weitere Stildefinitionen für den Button */
+}
