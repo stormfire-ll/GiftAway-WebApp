@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from "axios"
 import CardItems from '../components/CardItems'
-import ManageGiftAwayItems from '../components/ManageGiftawayItem'
+import ManageItems from '../components/ManageItems'
 
 
 const GiftAway = () => {
@@ -10,6 +10,22 @@ const GiftAway = () => {
     const [description, setDescription] = useState("")
     const [selectedImage, setSelectedImage] = useState(null)
     const [category, setCategory] = useState("")
+    const [myGiftaways, setMyGiftaways] = useState([])
+
+    useEffect(() => {
+        axios.get('http://localhost:4000/giftaway', {
+
+            withCredentials: true
+
+        })
+            .then((res) => {
+                const myGiftaways = res.data.giftaways
+                setMyGiftaways(myGiftaways)
+            })
+
+            .catch(err => console.log(err))
+    }, []);
+
 
     const submitGiftAway = (e) => {
         e.preventDefault();
@@ -38,14 +54,17 @@ const GiftAway = () => {
 
             .then((res) => {
                 console.log(res)
+                setMyGiftaways(prevGiftaways => [...prevGiftaways, res.data.createdGiftaway]);
             })
             .catch(err => console.log("Giftaway creation error", err))
-
-
-
-        console.log(image, title, description, category)
-
     }
+
+
+    const handleDelete = (id) => {
+        setMyGiftaways(prevGiftaways => prevGiftaways.filter(item => item._id !== id));
+    };
+
+
 
     return (
         <div style={{ display: "flex", flexDirection: "row", width: "100% " }}>
@@ -79,14 +98,12 @@ const GiftAway = () => {
                 </div>
             </div>
             <div style={{ width: "50%", flex: 1, backgroundColor: "wheat" }}>
-                <ul>
-                     {axios.get("http://localhost:4000/giftaway")
-                      .then((res) => {
-                        res.map((item) => {
-                            <ManageGiftAwayItems logo={item.logo} title={item.title} description={item.description}></ManageGiftAwayItems>
-                        })
-                      })
-                      .catch(err => console.log(err))} 
+                <ul style={{ listStyleType: "none" }}>
+                    {myGiftaways.map((item) => {
+                        return(
+                                <li key={item._id}><ManageItems id={item._id} logo={item.avatar} title={item.title} description={item.description} onDelete={handleDelete}></ManageItems></li>
+                    )})
+                        }
                 </ul>
             </div>
         </div>

@@ -10,7 +10,7 @@ const createGiftaway = async (req, res) => {
 
     const { title, description, categoryName } = req.body;
     // all the values are provided in postman extension form-data, how to receive them?
-console.log(req.files)
+    console.log(req.files)
     const avatar = req.files.image[0].path
 
 
@@ -53,9 +53,9 @@ console.log(req.files)
 
         console.log(publisherId)
 
-        await Giftaway.create({ avatar: avatarPath, title, description, categoryId, publisherId })
+        const createdGiftaway = await Giftaway.create({ avatar: avatarPath, title, description, categoryId, publisherId })
         console.log({ avatarPath, title, description, categoryId })
-        res.status(201).json('Giftaway created')
+        res.status(201).json({ createdGiftaway })
     }
     else {
         res.status(200).json('Giftaway exists')
@@ -64,33 +64,37 @@ console.log(req.files)
 
 const deleteGiftaway = async (req, res) => {
 
-    const { giftawayId } = req.body
+    const giftawayId = req.query.giftawayId
 
-    if (!giftawayID) {
-        throw new Error('Giftaway empty')
+
+    try {
+        const result = await Giftaway.deleteOne({ _id: giftawayId });
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'Giftaway not found' });
+        }
+        res.status(200).json('Deleted successfully');
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-
-    await Giftaway.deleteOne({ _id: giftawayId })
-    res.status(200).json('Deleted successfully')
 }
 
-const  getGiftaways = async (req, res) => {
+const getGiftaways = async (req, res) => {
 
     const userId = req.cookies["userId"]
 
     const allGiftaways = await Giftaway.find()
 
     const myGiftaways = []
-    for(giftaway of allGiftaways) {
+    for (giftaway of allGiftaways) {
 
-        if(giftaway.publisherId == userId) {
+        if (giftaway.publisherId == userId) {
             myGiftaways.push(giftaway)
         }
-
+        console.log(myGiftaways)
     }
-    res.status(200).json({giftaways: myGiftaways})
-    
+    res.status(200).json({ giftaways: myGiftaways })
+
 
 }
 
-module.exports = { createGiftaway, deleteGiftaway, getGiftaways}
+module.exports = { createGiftaway, deleteGiftaway, getGiftaways }
