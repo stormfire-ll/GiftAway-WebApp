@@ -66,7 +66,7 @@ const fetchUnclaimedGiftaways = async (req, res) => {
 
 // Funktion zum claimen eines Giftaways
 const claimGiftaway = async (req, res) => {
-    const { giftawayId } = req.body; // Die Giftaway-ID wird aus der Anfrage extrahiert
+    const { giftawayId } = req.body;// Die Giftaway-ID wird aus der Anfrage extrahiert
     const consumerId = req.cookies.userId; // Die Benutzer-ID wird aus den Cookies extrahiert
 
     // Das Giftaway wird in der Datenbank aktualisiert, um den Benutzer als Claimer festzulegen
