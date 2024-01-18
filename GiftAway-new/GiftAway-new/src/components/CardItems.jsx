@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const CardItems = ({ id, logo, title, description, onClaimIt, mail, phone }) => {
 
-
+//claim funktion wenn man auf den button klickt. er macht einen patch request an das backend und gibt dem entry einen consumerId und gibt in zu den claimed items
   const claimIt = (e) => {
     axios.patch("http://localhost:4000/dashboard/claimit", {
 

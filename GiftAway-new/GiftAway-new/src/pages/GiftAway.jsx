@@ -12,6 +12,7 @@ const GiftAway = () => {
     const [category, setCategory] = useState("")
     const [myGiftaways, setMyGiftaways] = useState([])
 
+    //für giftaway route get request um sich nur deine erstellen items anzuzeigen
     useEffect(() => {
         axios.get('http://localhost:4000/giftaway', {
 
@@ -26,7 +27,7 @@ const GiftAway = () => {
             .catch(err => console.log(err))
     }, []);
 
-
+//funktion für den gesamten upload eines items in die datenbank, wird getriggert sobald man auf den button klickt
     const submitGiftAway = (e) => {
         e.preventDefault();
 
@@ -59,7 +60,7 @@ const GiftAway = () => {
             .catch(err => console.log("Giftaway creation error", err))
     }
 
-
+//wird getriggert wenn man auf den delete button klickt und aktualisiert automatisch im frontend
     const handleDelete = (id) => {
         setMyGiftaways(prevGiftaways => prevGiftaways.filter(item => item._id !== id));
     };

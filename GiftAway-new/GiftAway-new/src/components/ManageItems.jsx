@@ -4,7 +4,7 @@ import axios from 'axios'
 const ManageItems = ({id, logo, title, description, onDelete}) => {
 
 
-
+//löscht einen eintrag aus der db 
 const deleteIt = () => {
 
  axios.delete(`http://localhost:4000/giftaway?giftawayId=${id}`, {

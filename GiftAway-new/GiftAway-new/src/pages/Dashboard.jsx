@@ -9,12 +9,13 @@ import axios from 'axios'
 const Dashboard = () => {
 
 
-
+//claimed sind die items mit consumerID zusätzlich zur publisherId, unclaimed/all-gifts nur mit publisherId
     const [claimedGiftaways, setClaimedGiftaways] = useState([])
     const [unclaimedGiftaways, setUnclaimedGiftaways] = useState([])
     const [consumerId, setConsumerId] = useState(null)
 
-
+//claim funktion damit es auch automatisch aktualisiert wird im frontend wenn man claimt, und fügt eine consumerId hinzu
+//zeigt dann nur die contactinformation an
     const handleClaimIt = (id, consumer_id) => {
 
         axios.post("http://localhost:4000/dashboard/getuser", {id: consumer_id}, {
@@ -24,10 +25,10 @@ const Dashboard = () => {
             .then(res => {
                 console.log(res)
 
-                 const phone = res.data.phone
+                const phone = res.data.phone
                 const mail = res.data.mail
                 const claimedItem = unclaimedGiftaways.find(item => item._id == id)
-
+//automatische änderung im frontend
                 if (claimedItem) {
                     setUnclaimedGiftaways(prev => prev.filter(item => item._id != id))
                     setClaimedGiftaways(prev => [...prev, { ...claimedItem, phone, mail }])
@@ -45,6 +46,7 @@ const Dashboard = () => {
 
     }
 
+    //get request für die ganze dashboard
     useEffect(() => {
         axios.get('http://localhost:4000/dashboard', {
 
