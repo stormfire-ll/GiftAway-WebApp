@@ -26,6 +26,10 @@ const Giftaway = new mongoose.Schema({
     publisherId: {
         type: Schema.Types.ObjectId,
         ref: "User"
+    },
+    receiverId: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
     }
 })
 

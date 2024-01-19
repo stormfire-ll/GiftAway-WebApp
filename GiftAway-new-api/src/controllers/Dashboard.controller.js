@@ -61,8 +61,10 @@ const fetchUnclaimedGiftaways = async (req, res) => {
         }
     }
 
+    const receivedGiftaways = await Giftaway.find({ receiverID : "userId" })
+
     // Die unclaimed und claimed Giftaways werden in der response gesendet
-    res.status(200).json({ "unclaimedGiftaways": unclaimedGiftaways, "claimedGiftaways": newClaimedGiftaways });
+    res.status(200).json({ "unclaimedGiftaways": unclaimedGiftaways, "claimedGiftaways": newClaimedGiftaways, receivedGiftaways }); // ES6 shorthand: variable names = property names
 }
 
 // Funktion zum claimen eines Giftaways
