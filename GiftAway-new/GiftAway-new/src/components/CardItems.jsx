@@ -3,28 +3,30 @@ import axios from 'axios'
 
 
 
-const CardItems = ({id, logo, title, description}) => {
-
-console.log(id, logo, title, description)
-
- const claimIt = (e) => {
-  axios.patch("http://localhost:4000/dashboard/claimit", {
-  
-  giftawayId: id,
+const CardItems = ({ id, logo, title, description, onClaimIt, mail, phone }) => {
 
 
-  }, {
-    withCredentials: true
-  })
-  .then()
-  .catch(err => console.log(err))
-  
+  const claimIt = (e) => {
+    axios.patch("http://localhost:4000/dashboard/claimit", {
 
-}  
+      giftawayId: id,
+
+
+    }, {
+      withCredentials: true
+    })
+      .then(response => {
+
+        onClaimIt(id, response.data.consumerId);
+      })
+
+      .catch(err => console.log(err))
+
+  }
 
 
   return (
-    
+
     <div style={{ display: "flex", flexDirection: "row" }} >
       <div className='leftCardItem'>
         <img src={logo} style={{ width: "100px", height: "100px", margin: "5px", borderRadius: "10px" }} />
@@ -33,7 +35,7 @@ console.log(id, logo, title, description)
         <h2>{title}</h2>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <p style={{ flex: 1, padding: "2px" }}>
-           {description}
+            {description}
           </p>
           <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={claimIt}>
             Claim it!

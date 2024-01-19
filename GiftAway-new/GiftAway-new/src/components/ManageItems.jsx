@@ -1,20 +1,22 @@
 import React from 'react'
 import axios from 'axios'
 
-const ManageGiftAwayItems = ({id, logo, title, description}) => {
+const ManageItems = ({id, logo, title, description, onDelete}) => {
 
-console.log(id, logo, title, description)
 
- const deleteIt = (e) => {
-  axios.delete("http://localhost:4000/giftaway/deleteGiftaway", {
+//löscht einen eintrag aus der db 
+const deleteIt = () => {
+
+ axios.delete(`http://localhost:4000/giftaway?giftawayId=${id}`, {
   
-  giftawayId: id,
+ //giftawayId: id,
 
-
-  }, {
     withCredentials: true
   })
-  .then()
+  .then(res => {
+    console.log(res);
+    onDelete(id);
+  })
   .catch(err => console.log(err))
 
 }  
@@ -41,4 +43,4 @@ console.log(id, logo, title, description)
   )
 }
 
-export default ManageGiftAwayItems
+export default ManageItems

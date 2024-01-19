@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from "axios"
 
+//registrierung mit zusätzlich phone und mail
 const Registration = () => {
 
     const [username, setUsername] = useState("")
@@ -9,6 +10,7 @@ const Registration = () => {
     const [password, setPassword] = useState("")
     
 
+    //wird ausgelöst wenn man den button klickt, macht einen post request mit den eingegeben daten
     const registerButtonclicked = (e) => {
         e.preventDefault()
 
