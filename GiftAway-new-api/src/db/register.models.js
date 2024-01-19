@@ -11,7 +11,8 @@ const User = new mongoose.Schema({
     },
     mail: {
         type: String,
-        require: true,   
+        require: true,
+        lowercase: true,   
     },
     phone: {
         type: String,

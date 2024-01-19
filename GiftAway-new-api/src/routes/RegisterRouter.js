@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 const registerRouter = express.Router();
 
 
-
+// POST: Create (register) a new User to DB
 registerRouter.post("/", async (req, res) => {
     const { username, password, mail, phone } = req.body;
 
@@ -19,13 +19,14 @@ registerRouter.post("/", async (req, res) => {
     }
     
     try {
-        // Check if the user already exists
+        // Check if the user already exists in DB
         const userExists = await User.findOne({ $or: [{ username }, { mail }] });
         if (userExists) {
             return res.status(409).json({ message: 'User already exists' });
         }
+
+        // Create a new user in DB
         const hashedPassword = await bcrypt.hash(password, 10);
-        // Create a new user
         const user = await User.create({
             username,
             password: hashedPassword, // Save the hashed password
@@ -41,7 +42,6 @@ registerRouter.post("/", async (req, res) => {
             }
         )
 
-
         const cookieOption = {
             httpOnly: true,
             secure: true
@@ -49,7 +49,6 @@ registerRouter.post("/", async (req, res) => {
 
         res.status(201).cookie("userId", user._id, cookieOption).json(user._id);
     } catch (error) {
-
         res.status(500).json({ message: 'Error registering new user' });
     }
 });

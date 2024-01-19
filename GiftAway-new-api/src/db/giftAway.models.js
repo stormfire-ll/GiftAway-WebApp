@@ -4,7 +4,7 @@ const {Schema} = require('mongoose')
 const Giftaway = new mongoose.Schema({
     avatar: {
         type: String,
-        require: true,
+        //T require: true,
     },
     title: {
         type: String,
@@ -27,8 +27,6 @@ const Giftaway = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     }
-
-
 })
 
 module.exports = new mongoose.model('Giftaway', Giftaway)

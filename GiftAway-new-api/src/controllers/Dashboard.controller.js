@@ -2,21 +2,22 @@ const { accessSync } = require('fs')
 const Giftaway = require('../db/giftAway.models')
 const User = require('../db/register.models')
 
-
+// All-Gifts List (by logged-in userId) & Claimed List with Contact Info
 const fetchUnclaimedGiftaways = async (req, res) => {
 
     const userId = req.cookies.userId || req.body.userId
     console.log(`Dashboard: ${userId}`)
 
+    // Arrays
     const allGiftaways = await Giftaway.find()
 
     const allUsers = await User.find()
 
-    const unclaimedGiftaways = allGiftaways.filter(giftaway => !giftaway?.consumerId || !giftaway.consumerId.equals(userId));
+    const unclaimedGiftaways = allGiftaways.filter(giftaway => !giftaway?.consumerId || !giftaway.consumerId.equals(userId)); // not claimed or claimed by diff user
 
-    const claimedGiftaways = allGiftaways.filter(giftaway => giftaway?.consumerId && giftaway.consumerId.equals(userId));
+    const claimedGiftaways = allGiftaways.filter(giftaway => giftaway?.consumerId && giftaway.consumerId.equals(userId)); // claimed & by userID
 
-
+    // Claimed Entries with ContactInfo (from userSchema)
     const newClaimedGiftaways = []
 
     for (let item of claimedGiftaways) {
@@ -43,7 +44,7 @@ const fetchUnclaimedGiftaways = async (req, res) => {
 
     res.status(200).json({ "unclaimedGiftaways": unclaimedGiftaways, "claimedGiftaways": newClaimedGiftaways })
 }
-
+// Assign consumerId to entry
 const claimGiftaway = async (req, res) => {
     const { giftawayId } = req.body
     const consumerId = req.cookies.userId
@@ -51,10 +52,9 @@ const claimGiftaway = async (req, res) => {
 
     giftaway.consumerId = consumerId
 
-    await giftaway.save({ validateBeforeSave: false })
+    await giftaway.save({ validateBeforeSave: false }) // validateBeforeSave: skip validation
 
     res.status(201).json('Updated successfully')
-
 }
 
 const unclaimGiftaway = async (req, res) => {
@@ -70,6 +70,5 @@ const unclaimGiftaway = async (req, res) => {
     
     res.status(201).json('Updated successfully')
 }
-
 
 module.exports = { fetchUnclaimedGiftaways, claimGiftaway, unclaimGiftaway }

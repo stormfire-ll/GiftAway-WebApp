@@ -6,6 +6,7 @@ const categoryRouter = express.Router();
 categoryRouter.post('/', async (req,res ) => {
     const {name} = req.body
 
+    
 const categoryPresent = await Category.findOne({name})
 
 if(!categoryPresent) {

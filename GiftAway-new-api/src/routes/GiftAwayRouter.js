@@ -12,6 +12,4 @@ giftAwayRouter.delete('/', deleteGiftaway)
 
 giftAwayRouter.get('/', getGiftaways)
 
-
-
 module.exports = giftAwayRouter;
