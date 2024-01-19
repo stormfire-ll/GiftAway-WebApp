@@ -64,7 +64,7 @@ const fetchUnclaimedGiftaways = async (req, res) => {
     const receivedGiftaways = await Giftaway.find({ receiverID : "userId" })
 
     // Die unclaimed und claimed Giftaways werden in der response gesendet
-    res.status(200).json({ "unclaimedGiftaways": unclaimedGiftaways, "claimedGiftaways": newClaimedGiftaways, receivedGiftaways }); // ES6 shorthand: variable names = property names
+    res.status(200).json({ "unclaimedGiftaways": unclaimedGiftaways, "claimedGiftaways": newClaimedGiftaways, receivedGiftaways }); // ES6 shorthand, if variable names = property names
 }
 
 // Funktion zum claimen eines Giftaways
@@ -98,4 +98,19 @@ const unclaimGiftaway = async (req, res) => {
     res.status(201).json('Erfolgreich aktualisiert');
 }
 
-module.exports = { fetchUnclaimedGiftaways, claimGiftaway, unclaimGiftaway, fetchUser };
+// Funktion zum Receiven eines Giftaways
+const receivedGiftaway = async (req, res) => {
+    const userId = req.cookies.userId || req.body.userId;
+    const { giftawayId, consumerId } = req.body;
+
+    const giftaway = await Giftaway.findByIdAndUpdate(giftawayId, {
+        $unset: { consumerId: 1 },
+        receiverId: userId,
+        deactivate: true,
+    }, {
+        new: true
+    });
+    res.status(201).json('Erfolgreich aktualisiert');
+}
+
+module.exports = { fetchUnclaimedGiftaways, claimGiftaway, unclaimGiftaway, fetchUser, receivedGiftaway };

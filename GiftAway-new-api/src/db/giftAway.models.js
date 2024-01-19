@@ -30,7 +30,11 @@ const Giftaway = new mongoose.Schema({
     receiverId: {
         type: Schema.Types.ObjectId,
         ref: "User"
-    }
+    },
+    deactivate: {
+        type: Boolean,
+        //default: false,
+    },
 })
 
 module.exports = new mongoose.model('Giftaway', Giftaway)

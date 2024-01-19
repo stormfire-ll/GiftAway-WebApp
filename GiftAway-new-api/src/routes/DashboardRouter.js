@@ -1,5 +1,5 @@
 const express = require('express');
-const {fetchUnclaimedGiftaways, claimGiftaway, unclaimGiftaway, fetchUser} = require('../controllers/Dashboard.controller')
+const { fetchUnclaimedGiftaways, claimGiftaway, unclaimGiftaway, fetchUser, receivedGiftaway } = require('../controllers/Dashboard.controller')
 
 
 
@@ -10,6 +10,7 @@ dashboardRouter.post('/getuser', fetchUser)
 
 dashboardRouter.patch('/claimit', claimGiftaway)
 dashboardRouter.patch('/unclaimit', unclaimGiftaway)
+dashboardRouter.patch('/receiveit', receivedGiftaway)
 
 
 module.exports = dashboardRouter
