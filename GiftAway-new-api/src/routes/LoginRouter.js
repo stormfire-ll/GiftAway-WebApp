@@ -12,15 +12,16 @@ loginRouter.post('/', async (req, res) => {
 
     // Überprüfen, ob Benutzername und Passwort im Request-Body vorhanden sind
     if (!username || !password) {
-        throw new Error('Username or password is not provided');
+        return res.status(400).json({ message: 'Username or password is not provided' });
     }
 
+    try{
     // Überprüfen, ob ein Benutzer mit dem angegebenen Benutzernamen existiert
     const isUserPresent = await User.findOne({ username });
 
     // Wenn kein Benutzer gefunden wird, wird eine Fehlermeldung geworfen
     if (!isUserPresent) {
-        throw new Error('User does not exist');
+        return res.status(404).json({ message: 'User does not exist' });
     }
 
     // Überprüfen, ob das eingegebene Passwort mit dem gespeicherten Passwort übereinstimmt
@@ -28,7 +29,7 @@ loginRouter.post('/', async (req, res) => {
 
     // Wenn das Passwort nicht korrekt ist, wird eine Fehlermeldung geworfen
     if (!isPasswordCorrect) {
-        throw new Error('Password is not correct');
+        return res.status(401).json({ message: 'Password is not correct' });
     }
 
     // Konfiguration der Cookie-Optionen
@@ -38,7 +39,10 @@ loginRouter.post('/', async (req, res) => {
     }; 
 
     // Senden einer Antwort mit Statuscode 200 (OK), Setzen eines Cookies und Zurücksenden der Benutzer-ID
-    res.status(200).cookie("userId", isUserPresent._id, cookieOption).json(isUserPresent._id);
-});
+    res.status(200).cookie("userId", isUserPresent._id, cookieOption).json({ message: "Login successful", userId: isUserPresent._id });
+}catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while logging in' });
+}});
 
 module.exports = loginRouter;

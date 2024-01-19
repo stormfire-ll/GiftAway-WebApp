@@ -1,0 +1,61 @@
+.login-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-popup-content button {
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+/* In Ihrer CSS-Datei, z.B. App.css */
+.error-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Hoch genug, um über anderen Elementen zu sein */
+}
+
+.error-popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    max-width: 300px; /* Oder eine beliebige feste Breite */
+    z-index: 1001;
+}
+
+.error-popup-content p {
+    margin-bottom: 15px;
+}
+
+.error-popup-content button {
+    cursor: pointer;
+    padding: 5px 10px;
+    background-color: #f44336; /* Ein roter Farbton */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}

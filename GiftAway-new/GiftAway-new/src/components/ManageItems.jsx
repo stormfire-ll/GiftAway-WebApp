@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 
-const ManageItems = ({id, logo, title, description, onDelete}) => {
+const ManageItems = ({id, logo, title, description, onDelete, onEdit}) => {
 
 
 //löscht einen eintrag aus der db 
@@ -21,6 +21,8 @@ const deleteIt = () => {
 
 }  
 
+
+
   return (
     
     <div style={{ display: "flex", flexDirection: "row" }} >
@@ -36,6 +38,7 @@ const deleteIt = () => {
           <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={deleteIt}>
             Delete me!
           </button>
+        
         </div>
       </div>
 

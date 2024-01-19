@@ -1,6 +1,6 @@
 const express = require('express');
 const storage = require('../middlewares/multer.middleware')
-const {createGiftaway, deleteGiftaway, getGiftaways} = require('../controllers/Giftaway.controller')
+const {createGiftaway, deleteGiftaway, getGiftaways, editGiftaway} = require('../controllers/Giftaway.controller')
 
 
 const giftAwayRouter = express.Router();

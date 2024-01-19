@@ -8,6 +8,7 @@ const categoryRouter = require('./routes/CategoryRouter')
 const giftAwayRouter = require('./routes/GiftAwayRouter')
 const cookieParser = require('cookie-parser')
 const dashboardRouter = require('./routes/DashboardRouter')
+const logoutRouter = require('./routes/LogoutRouter')
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use(express.json())
 
 app.use("/login", loginRouter)
 app.use("/register", registerRouter)
+app.use("/logout", logoutRouter)
 app.use("/giftaway", giftAwayRouter)
 app.use("/category", categoryRouter)
 app.use("/dashboard", dashboardRouter)

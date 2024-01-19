@@ -6,8 +6,7 @@ const ObjectId = require('mongodb'); // Das 'mongodb'-Modul wird importiert, um 
 
 // Funktion zum Abrufen eines Benutzers anhand seiner ID
 const fetchUser = async (req, res) => {
-    console.log(req.body); // Ausgabe der Anfrageparameter in der Konsole
-
+    
     // Alle Benutzer werden aus der DB abgerufen
     const users = await User.find();
 
@@ -15,15 +14,17 @@ const fetchUser = async (req, res) => {
     const user = users.filter(item => item.id.toString() == req.body.id);
 
     // Die Benutzerinformationen (phone, mail) werden in der response gesendet
-    console.log({ mail: user[0].mail, phone: user[0].phone });
-    res.status(200).json({ mail: user[0].mail, phone: user[0].phone });
+    if (user.length > 0) {
+        res.status(200).json({ mail: user[0].mail, phone: user[0].phone });
+    } else {
+        res.status(404).json({ message: "User not found" });
+    }
 }
 
 // Funktion zum Abrufen unclaimed Giftaways
 const fetchUnclaimedGiftaways = async (req, res) => {
     const userId = req.cookies.userId || req.body.userId; // Die Benutzer-ID wird aus den Cookies oder der Anfrage extrahiert
-    console.log(`Dashboard: ${userId}`);
-
+   
     // Alle Giftaways werden aus der Datenbank abgerufen
     const allGiftaways = await Giftaway.find();
 
@@ -33,14 +34,15 @@ const fetchUnclaimedGiftaways = async (req, res) => {
     // Unclaimed Giftaways werden gefiltert
     const unclaimedGiftaways = allGiftaways.filter(giftaway => !giftaway?.consumerId || !giftaway.consumerId.equals(userId));
 
+    // Neue Informationen zu den beanspruchten Geschenken werden erstellt
+    var newClaimedGiftaways = [];
+    
+    if(userId){
     // Claimed Giftaways werden gefiltert
     const claimedGiftaways = allGiftaways.filter(giftaway => giftaway?.consumerId && giftaway.consumerId.equals(userId));
 
-    // Neue Informationen zu den beanspruchten Geschenken werden erstellt
-    const newClaimedGiftaways = [];
 
     for (let item of claimedGiftaways) {
-        console.log(claimedGiftaways.length, userId);
 
         if (item.consumerId == userId) {
             const consumerId = item.consumerId;
@@ -59,7 +61,7 @@ const fetchUnclaimedGiftaways = async (req, res) => {
             }
         }
     }
-
+    }
     // Die unclaimed und claimed Giftaways werden in der response gesendet
     res.status(200).json({ "unclaimedGiftaways": unclaimedGiftaways, "claimedGiftaways": newClaimedGiftaways });
 }
@@ -92,7 +94,7 @@ const unclaimGiftaway = async (req, res) => {
         new: true
     });
 
-    res.status(201).json('Erfolgreich aktualisiert');
+    res.status(201).json('Updated successfully');
 }
 
 module.exports = { fetchUnclaimedGiftaways, claimGiftaway, unclaimGiftaway, fetchUser };

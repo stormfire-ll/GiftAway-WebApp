@@ -13,7 +13,7 @@ const createGiftaway = async (req, res) => {
 
     // Überprüfung, ob erforderliche Felder (Titel und Beschreibung) ausgefüllt sind
     if ([title, description].some(item => !item || (typeof item === 'string' && item.trim() === ""))) {
-        return res.status(400).json({ message: 'Alle Felder sind erforderlich' });
+        return res.status(400).json({ message: 'All fields are required' });
     }
 
     // Hochladen des Avatar-Bilds auf Cloudinary und Abrufen des Bild-URLs
@@ -41,7 +41,7 @@ const createGiftaway = async (req, res) => {
         const createdGiftaway = await Giftaway.create({ avatar: avatarPath, title, description, categoryId, publisherId })
         res.status(201).json({ createdGiftaway });
     } else {
-        res.status(200).json('Geschenk existiert bereits');
+        res.status(200).json('Giftaway exists');
     }
 }
 
@@ -52,9 +52,9 @@ const deleteGiftaway = async (req, res) => {
     try {
         const result = await Giftaway.deleteOne({ _id: giftawayId });
         if (result.deletedCount === 0) {
-            return res.status(404).json({ message: 'Geschenk nicht gefunden' });
+            return res.status(404).json({ message: 'Giftaway not found' });
         }
-        res.status(200).json('Erfolgreich gelöscht');
+        res.status(200).json('Deleted successfully');
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -62,11 +62,14 @@ const deleteGiftaway = async (req, res) => {
 
 // Funktion zum Abrufen der  Giftaways eines bestimmten Benutzers
 const getGiftaways = async (req, res) => {
-    const userId = req.cookies["userId"]; // Die Benutzer-ID wird aus den Cookies extrahiert
+    const userId = req.cookies.userId // Die Benutzer-ID wird aus den Cookies extrahiert
 
     const allGiftaways = await Giftaway.find(); // Alle  Giftaways werden aus der Datenbank abgerufen
 
     const myGiftaways = [];
+
+    if(userId){
+
     for (giftaway of allGiftaways) {
         if (giftaway.publisherId == userId) {
             myGiftaways.push(giftaway);
@@ -75,5 +78,10 @@ const getGiftaways = async (req, res) => {
 
     res.status(200).json({ giftaways: myGiftaways });
 }
+else {
+    res.status(200).json({ giftaways: myGiftaways })
+}
+}
+
 
 module.exports = { createGiftaway, deleteGiftaway, getGiftaways };

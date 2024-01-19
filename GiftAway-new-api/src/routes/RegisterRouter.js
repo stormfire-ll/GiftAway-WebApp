@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const User = require('../db/register.models'); // Assuming this exports a Mongoose model named "User"
+const bcrypt = require('bcrypt'); 
 const express = require('express')
 
 const registerRouter = express.Router();
