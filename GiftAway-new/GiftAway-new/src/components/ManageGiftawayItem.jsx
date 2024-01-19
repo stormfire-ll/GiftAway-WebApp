@@ -1,13 +1,14 @@
 import React from 'react'
 import axios from 'axios'
 
+// eslint-disable-next-line react/prop-types
 const ManageGiftAwayItems = ({id, logo, title, description}) => {
 
 console.log(id, logo, title, description)
 
  const deleteIt = (e) => {
   axios.delete("http://localhost:4000/giftaway/deleteGiftaway", {
-  
+
   giftawayId: id,
 
 
@@ -17,10 +18,10 @@ console.log(id, logo, title, description)
   .then()
   .catch(err => console.log(err))
 
-}  
+}
 
   return (
-    
+
     <div style={{ display: "flex", flexDirection: "row" }} >
       <div className='leftCardItem'>
         <img src={logo} style={{ width: "100px", height: "100px", margin: "5px", borderRadius: "10px" }} />

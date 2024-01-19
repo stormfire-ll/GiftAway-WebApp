@@ -80,13 +80,13 @@ const GiftAway = () => {
             </div>
             <div style={{ width: "50%", flex: 1, backgroundColor: "wheat" }}>
                 <ul>
-                     {axios.get("http://localhost:4000/giftaway")
+                     {/*axios.get("http://localhost:4000/giftaway")
                       .then((res) => {
                         res.map((item) => {
                             <ManageGiftAwayItems logo={item.logo} title={item.title} description={item.description}></ManageGiftAwayItems>
                         })
                       })
-                      .catch(err => console.log(err))} 
+                      .catch(err => console.log(err))*/}
                 </ul>
             </div>
         </div>
