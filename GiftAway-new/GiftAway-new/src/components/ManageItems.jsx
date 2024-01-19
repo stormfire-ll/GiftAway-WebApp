@@ -1,27 +1,28 @@
 import React from 'react'
 import axios from 'axios'
 
-// eslint-disable-next-line react/prop-types
-const ManageGiftAwayItems = ({id, logo, title, description}) => {
-
-console.log(id, logo, title, description)
-
- const deleteIt = (e) => {
-  axios.delete("http://localhost:4000/giftaway/deleteGiftaway", {
-
-  giftawayId: id,
+const ManageItems = ({id, logo, title, description, onDelete}) => {
 
 
-  }, {
+//löscht einen eintrag aus der db
+const deleteIt = () => {
+
+ axios.delete(`http://localhost:4000/giftaway?giftawayId=${id}`, {
+
+ //giftawayId: id,
+
     withCredentials: true
   })
-  .then()
+  .then(res => {
+    console.log(res);
+    onDelete(id);
+  })
   .catch(err => console.log(err))
 
-}
+}  
 
   return (
-
+    
     <div style={{ display: "flex", flexDirection: "row" }} >
       <div className='leftCardItem'>
         <img src={logo} style={{ width: "100px", height: "100px", margin: "5px", borderRadius: "10px" }} />
@@ -42,4 +43,4 @@ console.log(id, logo, title, description)
   )
 }
 
-export default ManageGiftAwayItems
+export default ManageItems

@@ -3,7 +3,7 @@ import axios from "axios";
 import userContext from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 
-
+//login route und sendet username und password an das backend, post request
 const Login = () => {
 
     const [userName, setUsername] = useState("")
@@ -22,14 +22,11 @@ const Login = () => {
         {
             withCredentials: true
         })
-            // Handle the response from backend here
             .then((res) => {
 
                console.log(res)
 
             })
-
-            // Catch errors if any
             .catch(err => console.log('Login error', err));
     }
 
