@@ -76,4 +76,35 @@ const getGiftaways = async (req, res) => {
     res.status(200).json({ giftaways: myGiftaways });
 }
 
-module.exports = { createGiftaway, deleteGiftaway, getGiftaways };
+const editGiftAways = async (req, res) => {
+    try {
+        const { title, description, categoryName, _id } = req.body;
+        const giftawayPresent = await Giftaway.findOne({ _id });
+
+        if (!giftawayPresent) {
+            // Check if avatar is present in the request before trying to upload to Cloudinary
+            const avatar = req.files?.image && req.files.image[0].path;
+
+            // Upload avatar to Cloudinary if present in the request
+            const avatarPath = avatar ? (await uploadOnCloudinary(avatar)).url : undefined;
+
+            const updatedFields = {
+                ...(title && { title }),
+                ...(description && { description }),
+                ...(avatarPath && { avatar: avatarPath }),
+                ...(categoryName && { categoryName }),
+            };
+
+            const updatedGiftaway = await Giftaway.findOneAndUpdate({ _id }, updatedFields, { new: true });
+
+            res.status(200).json({ updatedGiftaway });
+        } else {
+            res.status(404).json({ message: 'Giftaway not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+module.exports = { createGiftaway, deleteGiftaway, getGiftaways, editGiftAways };
