@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Registration from './pages/Registration';
 import GiftAway from './pages/GiftAway';
 import Navbar from './components/Navbar'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 

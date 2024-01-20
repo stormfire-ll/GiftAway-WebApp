@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios"
 import CardItems from '../components/CardItems'
 import ManageItems from '../components/ManageItems'
+import CategoryDropdown from '../components/CategoryDropdown';
+
 
 
 const GiftAway = () => {
@@ -11,6 +13,7 @@ const GiftAway = () => {
     const [selectedImage, setSelectedImage] = useState(null)
     const [category, setCategory] = useState("")
     const [myGiftaways, setMyGiftaways] = useState([])
+    const [selectedCategory, setSelectedCategory] = useState("");
 
     //für giftaway route get request um sich nur deine erstellen items anzuzeigen
     useEffect(() => {
@@ -27,7 +30,7 @@ const GiftAway = () => {
             .catch(err => console.log(err))
     }, []);
 
-//funktion für den gesamten upload eines items in die datenbank, wird getriggert sobald man auf den button klickt
+    //funktion für den gesamten upload eines items in die datenbank, wird getriggert sobald man auf den button klickt
     const submitGiftAway = (e) => {
         e.preventDefault();
 
@@ -38,7 +41,8 @@ const GiftAway = () => {
 
         formData.append("title", title)
         formData.append("description", description)
-        formData.append("categoryName", category)
+        // formData.append("categoryName", category)
+        formData.append("categoryName", selectedCategory);
         formData.append("image", image)
 
         console.log(formData)
@@ -60,13 +64,15 @@ const GiftAway = () => {
             .catch(err => console.log("Giftaway creation error", err))
     }
 
-//wird getriggert wenn man auf den delete button klickt und aktualisiert automatisch im frontend
+    //wird getriggert wenn man auf den delete button klickt und aktualisiert automatisch im frontend
     const handleDelete = (id) => {
         setMyGiftaways(prevGiftaways => prevGiftaways.filter(item => item._id !== id));
     };
 
-   
-    
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category);
+    };
+
 
 
 
@@ -91,10 +97,16 @@ const GiftAway = () => {
                             <label htmlFor="description" className="form-label">Description</label>
                             <input type="text" className="form-control" id="description" value={description} onChange={e => setDescription(e.target.value)} required />
                         </div>
-                        <div className="mb-3">
+                        {/*   <div className="mb-3">
                             <label htmlFor="category" className="form-label">Category</label>
                             <input type="text" className="form-control" id="category" value={category} onChange={(e) => setCategory(e.target.value)} required />
+                        </div> */}
+
+                        <div className="mb-3">
+                            <label htmlFor="category" className="form-label">Category</label>
+                            <CategoryDropdown onCategorySelect={handleCategorySelect} />
                         </div>
+
 
 
                         <button type="submit" className="btn btn-primary btn-lg" style={{ marginLeft: "40%", marginTop: "20px" }}>Submit</button>
@@ -104,10 +116,11 @@ const GiftAway = () => {
             <div style={{ width: "50%", flex: 1, backgroundColor: "wheat" }}>
                 <ul style={{ listStyleType: "none" }}>
                     {myGiftaways.map((item) => {
-                        return(
-                                <li key={item._id}><ManageItems id={item._id} logo={item.avatar} title={item.title} description={item.description} onDelete={handleDelete} ></ManageItems></li>
-                    )})
-                        }
+                        return (
+                            <li key={item._id}><ManageItems id={item._id} logo={item.avatar} title={item.title} description={item.description} onDelete={handleDelete} ></ManageItems></li>
+                        )
+                    })
+                    }
                 </ul>
             </div>
         </div>

@@ -2,7 +2,9 @@
 const { accessSync } = require('fs'); // Das 'fs'-Modul wird für Dateisystemzugriffe verwendet
 const Giftaway = require('../db/giftAway.models'); // Das Giftaway-Modell wird importiert
 const User = require('../db/register.models'); // Das User-Modell wird importiert
+const Category = require('../db/category.model')
 const ObjectId = require('mongodb'); // Das 'mongodb'-Modul wird importiert, um ObjectIds zu verwenden
+
 
 // Funktion zum Abrufen eines Benutzers anhand seiner ID
 const fetchUser = async (req, res) => {
@@ -24,7 +26,13 @@ const fetchUser = async (req, res) => {
 // Funktion zum Abrufen unclaimed Giftaways
 const fetchUnclaimedGiftaways = async (req, res) => {
     const userId = req.cookies.userId || req.body.userId; // Die Benutzer-ID wird aus den Cookies oder der Anfrage extrahiert
-   
+    const { category, searchQuery } = req.query;
+    let categoryId = null;
+
+    if (category) {
+        const categoryObj = await Category.findOne({ name: category });
+        categoryId = categoryObj?._id;
+    }
     // Alle Giftaways werden aus der Datenbank abgerufen
     const allGiftaways = await Giftaway.find();
 
@@ -32,8 +40,18 @@ const fetchUnclaimedGiftaways = async (req, res) => {
     const allUsers = await User.find();
 
     // Unclaimed Giftaways werden gefiltert
-    const unclaimedGiftaways = allGiftaways.filter(giftaway => !giftaway?.consumerId || !giftaway.consumerId.equals(userId));
+    let unclaimedGiftaways = allGiftaways.filter(giftaway => !giftaway?.consumerId || !giftaway.consumerId.equals(userId));
 
+    if (categoryId) {
+        unclaimedGiftaways = unclaimedGiftaways.filter(giftaway => giftaway.categoryId.toString() === categoryId.toString());
+    }
+    if (searchQuery) {
+        const lowerCaseQuery = searchQuery.toLowerCase();
+        unclaimedGiftaways = unclaimedGiftaways.filter(giftaway => 
+            giftaway.title.toLowerCase().includes(lowerCaseQuery) || 
+            giftaway.description.toLowerCase().includes(lowerCaseQuery)
+        );
+    }
     // Neue Informationen zu den beanspruchten Geschenken werden erstellt
     var newClaimedGiftaways = [];
     

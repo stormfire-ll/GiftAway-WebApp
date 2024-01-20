@@ -27,7 +27,6 @@ const CardItems = ({ id, logo, title, description, onClaimIt, mail, phone }) => 
   
 
   return (
-
     <div style={{ display: "flex", flexDirection: "row" }} >
       <div className='leftCardItem'>
         <img src={logo} style={{ width: "100px", height: "100px", margin: "5px", borderRadius: "10px" }} />

@@ -4,6 +4,16 @@ const Category = require('../db/category.model');
 
 const categoryRouter = express.Router();
 
+categoryRouter.get('/', async (req, res) => {
+    try {
+        const categories = await Category.find({}, 'categoryname -_id');
+        res.status(200).json(categories);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+
 // Definieren einer POST-Route auf dem Category-Router
 categoryRouter.post('/', async (req, res) => {
     // Extrahieren des 'name' aus dem Request-Body

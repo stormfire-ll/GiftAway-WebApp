@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CardItems from '../components/CardItems'
 import ClaimedItems from '../components/ClaimedItems'
+import CategoryDropdown from '../components/CategoryDropdown'
 import Navbar from '../components/Navbar'
 import LoginPopup from '../components/LoginPopup';
 import axios from 'axios'
@@ -15,6 +16,54 @@ const Dashboard = () => {
     const [unclaimedGiftaways, setUnclaimedGiftaways] = useState([])
     const [consumerId, setConsumerId] = useState(null)
     const [showLoginPopup, setShowLoginPopup] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+
+
+    const handleCategorySelect = (categoryName) => {
+        setSelectedCategory(categoryName);
+    };
+
+    const handleSearch = async (event) => {
+        event.preventDefault(); 
+
+        const categoryQuery = selectedCategory !== "All" ? `category=${selectedCategory}` : '';
+        const searchQueryPart = searchQuery ? `searchQuery=${searchQuery}` : '';
+    
+        const url = `http://localhost:4000/dashboard?${categoryQuery}&${searchQueryPart}`.replace(/&+/g, '&').replace(/\?&/, '?');
+
+        try {
+            const response = await axios.get(url);
+            setClaimedGiftaways(response.data.claimedGiftaways);
+            setUnclaimedGiftaways(response.data.unclaimedGiftaways); 
+        } catch (error) {
+            console.error("Error fetching filtered data:", error);
+        }
+    };
+
+    const handleReset = async () => {
+        setSelectedCategory('');
+        setSearchQuery('');
+        loadGiftaways(); // Eine Funktion, um die Daten neu zu laden
+    };
+
+    const loadGiftaways = async () => {
+        try {
+            const response = await axios.get('http://localhost:4000/dashboard', {
+                withCredentials: true
+            });
+            console.log(response.data); // Zum Debuggen
+            setClaimedGiftaways(response.data.claimedGiftaways);
+            setUnclaimedGiftaways(response.data.unclaimedGiftaways);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    useEffect(() => {
+        loadGiftaways();
+    }, []);
+
     //claim funktion damit es auch automatisch aktualisiert wird im frontend wenn man claimt, und fügt eine consumerId hinzu
     //zeigt dann nur die contactinformation an
     const handleClaimIt = async (id, consumer_id) => {
@@ -26,7 +75,7 @@ const Dashboard = () => {
             const phone = res.data.phone
             const mail = res.data.mail
             const claimedItem = unclaimedGiftaways.find(item => item._id == id)
-            
+
             //automatische änderung im frontend
             if (claimedItem) {
                 setUnclaimedGiftaways(prev => prev.filter(item => item._id != id))
@@ -100,7 +149,16 @@ const Dashboard = () => {
             {/* <Navbar /> */}
             <div className="dashboardWrapper" style={{ padding: "5px", paddingTop: "2rem" }}>
                 <div className="text-center" style={{ height: "90vh" }}>
+                <div >
+                    <form className="d-flex" role="search" style={{alignContent: "center"}} onSubmit={handleSearch}>
+                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" style={{width:"15rem"}} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+                        <CategoryDropdown onCategorySelect={handleCategorySelect} />
+                        <button className="btn btn-outline-success" type="submit">Search</button>
+                        <button onClick={handleReset}>Show all</button>
+                    </form>
+                    </div>
                     <div style={{ flexDirection: "row", display: "flex" }}>
+
                         <div style={{ flex: 3 }}>
                             <h3>All GiftAways</h3>
                             <hr />
