@@ -30,7 +30,7 @@ const fetchUnclaimedGiftaways = async (req, res) => {
     let categoryId = null;
 
     if (category) {
-        const categoryObj = await Category.findOne({ name: category });
+        const categoryObj = await Category.findOne({ categoryname: category });
         categoryId = categoryObj?._id;
     }
     // Alle Giftaways werden aus der Datenbank abgerufen
@@ -40,11 +40,18 @@ const fetchUnclaimedGiftaways = async (req, res) => {
     const allUsers = await User.find();
 
     // Unclaimed Giftaways werden gefiltert
-    let unclaimedGiftaways = allGiftaways.filter(giftaway => !giftaway?.consumerId || !giftaway.consumerId.equals(userId));
+    let unclaimedGiftaways = allGiftaways.filter(giftaway => 
+        (!giftaway?.consumerId || !giftaway.consumerId.equals(userId)) &&
+        (!categoryId || (giftaway.categoryId && giftaway.categoryId.equals(categoryId))) &&
+        (!searchQuery || giftaway.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            giftaway.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
 
     if (categoryId) {
-        unclaimedGiftaways = unclaimedGiftaways.filter(giftaway => giftaway.categoryId.toString() === categoryId.toString());
+        unclaimedGiftaways = unclaimedGiftaways.filter(giftaway => 
+            giftaway.categoryId && giftaway.categoryId.equals(categoryId));
     }
+    
     if (searchQuery) {
         const lowerCaseQuery = searchQuery.toLowerCase();
         unclaimedGiftaways = unclaimedGiftaways.filter(giftaway => 
