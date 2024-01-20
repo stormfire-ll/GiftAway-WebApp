@@ -150,12 +150,6 @@ const Dashboard = () => {
             <div className="dashboardWrapper" style={{ padding: "5px", paddingTop: "2rem" }}>
                 <div className="text-center" style={{ height: "90vh" }}>
                     <div >
-                        {/*  <form className="d-flex" role="search" style={{alignContent: "center"}} onSubmit={handleSearch}>
-                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" style={{width:"15rem"}} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
-                        <CategoryDropdown onCategorySelect={handleCategorySelect} />
-                        <button className="btn btn-outline-success" type="submit" style={{marginRight:"5px"}}>Search</button>
-                        <button className="btn btn-outline-success"onClick={handleReset}>Show all</button>
-                    </form> */}
                     </div>
                     <div style={{ flexDirection: "row", display: "flex" }}>
 
