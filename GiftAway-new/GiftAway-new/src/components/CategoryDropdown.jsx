@@ -25,7 +25,7 @@ const CategoryDropdown = ({ onCategorySelect }) => {
     };
 
     return (
-        <Dropdown onSelect={handleSelect}>
+        <Dropdown onSelect={handleSelect} style={{marginRight:"5px"}}>
             <Dropdown.Toggle variant="success" id="dropdown-basic">
                 {selectedCategory}
             </Dropdown.Toggle>

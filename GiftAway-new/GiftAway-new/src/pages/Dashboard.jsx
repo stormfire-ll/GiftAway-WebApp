@@ -25,17 +25,17 @@ const Dashboard = () => {
     };
 
     const handleSearch = async (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
 
         const categoryQuery = selectedCategory !== "All" ? `category=${selectedCategory}` : '';
         const searchQueryPart = searchQuery ? `searchQuery=${searchQuery}` : '';
-    
+
         const url = `http://localhost:4000/dashboard?${categoryQuery}&${searchQueryPart}`.replace(/&+/g, '&').replace(/\?&/, '?');
 
         try {
             const response = await axios.get(url);
             setClaimedGiftaways(response.data.claimedGiftaways);
-            setUnclaimedGiftaways(response.data.unclaimedGiftaways); 
+            setUnclaimedGiftaways(response.data.unclaimedGiftaways);
         } catch (error) {
             console.error("Error fetching filtered data:", error);
         }
@@ -149,19 +149,26 @@ const Dashboard = () => {
             {/* <Navbar /> */}
             <div className="dashboardWrapper" style={{ padding: "5px", paddingTop: "2rem" }}>
                 <div className="text-center" style={{ height: "90vh" }}>
-                <div >
-                    <form className="d-flex" role="search" style={{alignContent: "center"}} onSubmit={handleSearch}>
+                    <div >
+                        {/*  <form className="d-flex" role="search" style={{alignContent: "center"}} onSubmit={handleSearch}>
                         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" style={{width:"15rem"}} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
                         <CategoryDropdown onCategorySelect={handleCategorySelect} />
-                        <button className="btn btn-outline-success" type="submit">Search</button>
-                        <button onClick={handleReset}>Show all</button>
-                    </form>
+                        <button className="btn btn-outline-success" type="submit" style={{marginRight:"5px"}}>Search</button>
+                        <button className="btn btn-outline-success"onClick={handleReset}>Show all</button>
+                    </form> */}
                     </div>
                     <div style={{ flexDirection: "row", display: "flex" }}>
 
                         <div style={{ flex: 3 }}>
                             <h3>All GiftAways</h3>
                             <hr />
+                            <form className="d-flex" role="search" style={{ alignContent: "center", marginBottom: "20px" }} onSubmit={handleSearch}>
+                                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" style={{ width: "15rem" }} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                                <CategoryDropdown onCategorySelect={handleCategorySelect} />
+                                <button className="btn btn-outline-success" type="submit" style={{ marginRight: "5px" }}>Search</button>
+                                <button className="btn btn-outline-success" onClick={handleReset}>Show all</button>
+                            </form>
+
                             <ul style={{ listStyleType: "none" }}>
                                 {unclaimedGiftaways.map((item) => {
                                     return (
