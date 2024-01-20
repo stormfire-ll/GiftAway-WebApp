@@ -1,9 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 
-const ClaimedItems = ({ logo, title, mail, phone, id }) => {
+const ClaimedItems = ({ logo, title, mail, phone, id, onUnclaimIt }) => {
 
-    //TODO: ist die unclaim funktion und soll die consumerId löschen und das item zu den unclaimed/all-gifts hinzufügen
     const unClaimIt = (e) => {
         axios.patch("http://localhost:4000/dashboard/unclaimit", {
         
@@ -13,7 +12,10 @@ const ClaimedItems = ({ logo, title, mail, phone, id }) => {
         }, {
           withCredentials: true
         })
-        .then()
+        .then(response => {
+
+            onUnclaimIt(id);
+          })
         .catch(err => console.log(err))
         
       

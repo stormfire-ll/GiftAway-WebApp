@@ -1,7 +1,24 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const Navbar = () => {
+
+  const handleLogout = () => {
+    axios.post("http://localhost:4000/logout/", {}, {
+      withCredentials: true
+    })
+    .then(res => {
+      
+    //  navigate("/")
+      window.location.reload()
+    })
+    .catch(error => {
+      console.error('Logout failed:', error);
+      // Handle errors here, such as displaying a message to the user.
+    });
+  }
+
   return (
     <div><nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -12,23 +29,20 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              {/* <a className="nav-link active" aria-current="page" href="#">Dashboard</a> */}
-              <Link to="/">Dashboard</Link>
+              <Link to="/" className="nav-link">Dashboard</Link>
+            </li>
+            <li>
+             <Link to="/login" className="nav-link">Login</Link>
             </li>
             <li className="nav-item">
-             {/*  <a className="nav-link" href="">Login</a> */}
-             <Link to="/login">Login</Link>
-            </li>
-            <li className="nav-item">
-              {/* <a className="nav-link" href="#">Login</a> */}
-              <Link to="/giftaway">Manage Giftaway</Link>
+             <Link to="/giftaway" className="nav-link">Manage Giftaway</Link>
             </li>
           </ul>
-
-          <form className="d-flex" role="search">
+          <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+          {/* <form className="d-flex" role="search">
         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
         <button className="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      </form> */}
         </div>
       </div>
     </nav></div>

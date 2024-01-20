@@ -24,6 +24,7 @@ const CardItems = ({ id, logo, title, description, onClaimIt, mail, phone }) => 
 
   }
 
+  
 
   return (
 

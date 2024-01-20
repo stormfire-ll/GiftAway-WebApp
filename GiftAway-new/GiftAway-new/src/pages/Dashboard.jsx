@@ -3,6 +3,7 @@ import CardItems from '../components/CardItems'
 import ClaimedItems from '../components/ClaimedItems'
 import ReceivedItems from '../components/ReceivedItems'
 import Navbar from '../components/Navbar'
+import LoginPopup from '../components/LoginPopup';
 import axios from 'axios'
 
 
@@ -10,42 +11,51 @@ import axios from 'axios'
 const Dashboard = () => {
 
 
-//claimed sind die items mit consumerID zusätzlich zur publisherId, unclaimed/all-gifts nur mit publisherId
+    //claimed sind die items mit consumerID zusätzlich zur publisherId, unclaimed/all-gifts nur mit publisherId
     const [claimedGiftaways, setClaimedGiftaways] = useState([])
     const [unclaimedGiftaways, setUnclaimedGiftaways] = useState([])
     const [consumerId, setConsumerId] = useState(null)
     const [receivedGiftaways, setReceivedGiftaways] = useState([])
 
+    const [showLoginPopup, setShowLoginPopup] = useState(false);
+    //claim funktion damit es auch automatisch aktualisiert wird im frontend wenn man claimt, und fügt eine consumerId hinzu
+    //zeigt dann nur die contactinformation an
+    const handleClaimIt = async (id, consumer_id) => {
+        try {
+            const res = await axios.post("http://localhost:4000/dashboard/getuser", { id: consumer_id }, {
 
-//claim funktion damit es auch automatisch aktualisiert wird im frontend wenn man claimt, und fügt eine consumerId hinzu
-//zeigt dann nur die contactinformation an
-    const handleClaimIt = (id, consumer_id) => {
-
-        axios.post("http://localhost:4000/dashboard/getuser", {id: consumer_id}, {
-
-            withCredentials: true
-        })
-            .then(res => {
-                console.log(res)
-
-                const phone = res.data.phone
-                const mail = res.data.mail
-                const claimedItem = unclaimedGiftaways.find(item => item._id == id)
-//automatische änderung im frontend
-                if (claimedItem) {
-                    setUnclaimedGiftaways(prev => prev.filter(item => item._id != id))
-                    setClaimedGiftaways(prev => [...prev, { ...claimedItem, phone, mail }])
-                } 
-                
-             /*    const claimedItem = unclaimedGiftaways.find(item => item._id === id);
-
-                if (claimedItem) {
-                    setUnclaimedGiftaways(prev => prev.filter(item => item._id !== id));
-                    setClaimedGiftaways(prev => [...prev, { ...claimedItem, phone: res.data.phone, mail: res.data.mail }]);
-                } */
+                withCredentials: true
+            })
+            const phone = res.data.phone
+            const mail = res.data.mail
+            const claimedItem = unclaimedGiftaways.find(item => item._id == id)
+            
+            //automatische änderung im frontend
+            if (claimedItem) {
+                setUnclaimedGiftaways(prev => prev.filter(item => item._id != id))
+                setClaimedGiftaways(prev => [...prev, { ...claimedItem, phone, mail }])
             }
-            )
-            .catch()
+
+        }
+
+        catch (err) {
+            if (err.response && err.response.status === 404) {
+                handleLoginPopup();
+            }
+            else {
+                console.error('An unexpected error occurred: ', err);
+            }
+        }
+    }
+
+    const handleUnclaimIt = (id) => {
+
+        const unclaimedItems = claimedGiftaways.find(item => item._id == id)
+
+        if (unclaimedItems) {
+            setClaimedGiftaways(prev => prev.filter(item => item._id != id))
+            setUnclaimedGiftaways(prev => [...prev, unclaimedItems])
+        }
 
     }
 
@@ -82,9 +92,18 @@ const Dashboard = () => {
 
     }
 
+    const handleLoginPopup = () => {
+        setShowLoginPopup(true);
+    }
+
+    const closeLoginPopup = () => {
+        setShowLoginPopup(false);
+    }
+
     return (
         <>
-            <Navbar />
+            {showLoginPopup && <LoginPopup onClose={closeLoginPopup} />}
+            {/* <Navbar /> */}
             <div className="dashboardWrapper" style={{ padding: "5px", paddingTop: "2rem" }}>
                 <div className="text-center" style={{ height: "90vh" }}>
                     <div style={{ flexDirection: "row", display: "flex" }}>
