@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 
-const ManageItems = ({id, logo, title, description, onDelete, onEdit}) => {
+const ManageItems = ({id, logo, title, description, onDelete, onEdit, onRetrieved}) => {
 
 
 //löscht einen eintrag aus der db 
@@ -14,8 +14,10 @@ const deleteIt = () => {
     withCredentials: true
   })
   .then(res => {
-    console.log(res);
+    //console.log(res);
     onDelete(id);
+    //onEdit(id);
+    onRetrieved(id);
   })
   .catch(err => console.log(err))
 
@@ -37,8 +39,13 @@ const deleteIt = () => {
           </p>
           <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={deleteIt}>
             Delete me!
-          </button>
-        
+          </button>     
+          {/* <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={editIt}>
+            Edit
+          </button>  */}
+          <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={retrievedIt}>
+            Retrieved
+          </button>   
         </div>
       </div>
 

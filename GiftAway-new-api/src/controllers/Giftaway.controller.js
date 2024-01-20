@@ -70,17 +70,17 @@ const getGiftaways = async (req, res) => {
 
     if(userId){
 
-    for (giftaway of allGiftaways) {
-        if (giftaway.publisherId == userId) {
-            myGiftaways.push(giftaway);
+        for (giftaway of allGiftaways) {
+            if (giftaway.publisherId == userId) {
+                myGiftaways.push(giftaway);
+            }
         }
-    }
 
-    res.status(200).json({ giftaways: myGiftaways });
-}
-else {
-    res.status(200).json({ giftaways: myGiftaways })
-}
+        res.status(200).json({ giftaways: myGiftaways });
+    }
+    else {
+        res.status(200).json({ giftaways: myGiftaways })
+    }
 }
 
 
