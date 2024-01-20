@@ -64,9 +64,10 @@ const GiftAway = () => {
     const handleDelete = (id) => {
         setMyGiftaways(prevGiftaways => prevGiftaways.filter(item => item._id !== id));
     };
+      
+    const handleRetrieved = (id) => {
 
-   
-    
+    };
 
 
 
@@ -105,7 +106,7 @@ const GiftAway = () => {
                 <ul style={{ listStyleType: "none" }}>
                     {myGiftaways.map((item) => {
                         return(
-                                <li key={item._id}><ManageItems id={item._id} logo={item.avatar} title={item.title} description={item.description} onDelete={handleDelete} ></ManageItems></li>
+                                <li key={item._id}><ManageItems id={item._id} logo={item.avatar} title={item.title} description={item.description} onDelete={handleDelete} onRetrieved={handleRetrieved}></ManageItems></li>
                     )})
                         }
                 </ul>

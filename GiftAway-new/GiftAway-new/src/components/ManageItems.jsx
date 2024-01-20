@@ -2,28 +2,43 @@ import React from 'react'
 import axios from 'axios'
 
 const ManageItems = ({id, logo, title, description, onDelete, onEdit, onRetrieved}) => {
+  const [retrieved, setRetrieved] = useState(false); //?
 
+  //löscht einen eintrag aus der db 
+  const deleteIt = () => {
+  axios.delete(`http://localhost:4000/giftaway?giftawayId=${id}`, {
+  //giftawayId: id,
+      withCredentials: true
+    })
+    .then(res => {
+      //console.log(res);
+      onDelete(id);
+    })
+    .catch(err => console.log(err))
+  }  
 
-//löscht einen eintrag aus der db 
-const deleteIt = () => {
+  // const editIt = () => {
+  //   axios.patch(`http://localhost:4000/giftaway?giftawayId=${id}`, {
+  //     withCredentials: true
+  //   })
+  //   .then(res => {
+  //     onEdit(id);
+  //   })
+  //   .catch(err => console.log(err))
+  // }
 
- axios.delete(`http://localhost:4000/giftaway?giftawayId=${id}`, {
-  
- //giftawayId: id,
+  const retrievedIt = () => {
+    axios.patch(`http://localhost:4000/giftaway?giftawayId=${id}`, {
 
-    withCredentials: true
-  })
-  .then(res => {
-    //console.log(res);
-    onDelete(id);
-    //onEdit(id);
-    onRetrieved(id);
-  })
-  .catch(err => console.log(err))
-
-}  
-
-
+    },
+    {
+      withCredentials: true
+    })
+    .then(res => {
+      onRetrieved(id);
+    })
+    .catch(err => console.log(err))
+  }
 
   return (
     

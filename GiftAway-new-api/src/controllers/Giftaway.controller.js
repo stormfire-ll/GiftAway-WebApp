@@ -83,5 +83,20 @@ const getGiftaways = async (req, res) => {
     }
 }
 
+// Funktion zum Receiven eines Giftaways
+const receivedGiftaway = async (req, res) => {
+    const userId = req.cookies.userId || req.body.userId;
+    const { giftawayId, consumerId } = req.body;
 
-module.exports = { createGiftaway, deleteGiftaway, getGiftaways };
+    const giftaway = await Giftaway.findByIdAndUpdate(giftawayId, {
+        $unset: { consumerId: 1 },
+        receiverId: userId,
+        deactivate: true,
+    }, {
+        new: true
+    });
+    res.status(201).json('Erfolgreich aktualisiert');
+}
+
+
+module.exports = { createGiftaway, deleteGiftaway, getGiftaways, receivedGiftaway };

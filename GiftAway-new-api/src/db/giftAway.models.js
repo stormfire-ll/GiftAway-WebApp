@@ -33,7 +33,7 @@ const Giftaway = new mongoose.Schema({
     },
     deactivate: {
         type: Boolean,
-        //default: false,
+        default: false, // default: undefined
     },
 })
 
