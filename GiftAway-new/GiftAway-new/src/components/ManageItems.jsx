@@ -17,6 +17,8 @@ const ManageItems = ({id, logo, title, description, onDelete, onEdit, onRetrieve
     .catch(err => console.log(err))
   }  
 
+// ------------ TO DO 
+
   // const editIt = () => {
   //   axios.patch(`http://localhost:4000/giftaway?giftawayId=${id}`, {
   //     withCredentials: true
@@ -28,8 +30,8 @@ const ManageItems = ({id, logo, title, description, onDelete, onEdit, onRetrieve
   // }
 
   const retrievedIt = () => {
-    axios.patch(`http://localhost:4000/giftaway?giftawayId=${id}`, {
-
+    axios.patch(`http://localhost:4000/giftaway?giftawayId=${id}`, { // LInk?
+        //???
     },
     {
       withCredentials: true
