@@ -1,7 +1,17 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
+import SearchBar from "./SearchBar.jsx";
 
 const Navbar = () => {
+  const [searchResults, setSearchResults] = useState([]);
+  const handleSearch = (term) => {
+    // Perform your search logic here (e.g., API call or local filtering)
+    // For simplicity, let's just log the search term for now
+    console.log('Search Term:', term);
+
+
+  };
+
   return (
     <div><nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -25,10 +35,11 @@ const Navbar = () => {
             </li>
           </ul>
 
-          <form className="d-flex" role="search">
+          <SearchBar onSearch={handleSearch}/>
+          {/*<form className="d-flex" role="search">
         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
         <button className="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      </form>*/}
         </div>
       </div>
     </nav></div>

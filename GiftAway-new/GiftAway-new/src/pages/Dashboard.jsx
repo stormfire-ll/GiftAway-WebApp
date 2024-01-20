@@ -88,6 +88,7 @@ const Dashboard = () => {
                             <ul style={{ listStyleType: "none" }}>
                                 {unclaimedGiftaways.map((item) => {
                                     return (
+                                        //ändern auf Elemente aus MongoDB...
                                         <li key={item._id}> <CardItems onClaimIt={handleClaimIt} id={item._id} logo={item.avatar} title={item.title} description={item.description} mail={item.mail} phone={item.phone} /></li>
                                     )
                                 })}
