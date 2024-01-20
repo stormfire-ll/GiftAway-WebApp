@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CardItems from '../components/CardItems'
 import ClaimedItems from '../components/ClaimedItems'
-//import ReceivedItems from '../components/ReceivedItems'
+import ReceivedItems from '../components/ReceivedItems'
 import Navbar from '../components/Navbar'
 import axios from 'axios'
 
@@ -14,7 +14,7 @@ const Dashboard = () => {
     const [claimedGiftaways, setClaimedGiftaways] = useState([])
     const [unclaimedGiftaways, setUnclaimedGiftaways] = useState([])
     const [consumerId, setConsumerId] = useState(null)
-    //const [receivedGiftaways, setReceivedGiftaways] = useState([])
+    const [receivedGiftaways, setReceivedGiftaways] = useState([])
 
 
 //claim funktion damit es auch automatisch aktualisiert wird im frontend wenn man claimt, und fügt eine consumerId hinzu
@@ -59,12 +59,12 @@ const Dashboard = () => {
             .then((res) => {
                 const claimedGiftaways = res.data.claimedGiftaways
                 const unclaimedGiftaways = res.data.unclaimedGiftaways
-                //const receivedGiftaways = res.data.receivedGiftaways
+                const receivedGiftaways = res.data.receivedGiftaways
 
 
                 setClaimedGiftaways(claimedGiftaways)
                 setUnclaimedGiftaways(unclaimedGiftaways)
-                //setReceivedGiftaways(receivedGiftaways)                
+                setReceivedGiftaways(receivedGiftaways)                
                 console.log(unclaimedGiftaways, claimedGiftaways) //, receivedGiftaways
 
             })
@@ -114,11 +114,11 @@ const Dashboard = () => {
                             <h3>Received GiftAways</h3>
                             <hr />
                             <ul style={{ listStyleType: "none" }}>
-                                {/* {receivedGiftaways.map((item) => {
+                                {receivedGiftaways.map((item) => {
                                     return (
                                         <li key={item._id}> <ReceivedItems id={item._id} logo={item.avatar} title={item.title} description={item.description} mail={item.mail} phone={item.phone} /></li>
                                     )
-                                })} */}
+                                })}
                             </ul>
                         </div>
                     </div>
