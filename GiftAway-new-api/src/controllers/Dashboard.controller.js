@@ -39,6 +39,8 @@ const fetchUnclaimedGiftaways = async (req, res) => {
     // Alle Benutzer werden aus der Datenbank abgerufen
     const allUsers = await User.find();
 
+    const receivedGiftaways = await Giftaway.find({ receiverID : "userId" })
+
     // Unclaimed Giftaways werden gefiltert
     let unclaimedGiftaways = allGiftaways.filter(giftaway => 
         (!giftaway?.consumerId || !giftaway.consumerId.equals(userId)) &&
