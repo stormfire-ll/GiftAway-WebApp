@@ -32,7 +32,8 @@ const Registration = () => {
         username: username,
         mail: mail,
         phone: phoneNumber,
-        password: password
+        password: password,
+        pickUpLocation: pickUpLocation
        },
        {
         withCredentials: true
@@ -78,6 +79,10 @@ const Registration = () => {
                     <div className="mb-3">
                         <label htmlFor="pickuplocation" className="form-label">Pickup-Location (Optional)</label>
                         <input type="pickuplocation" className="form-control" id="pickuplocation" value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} required/>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="Pickup-Location" className="form-label">Pickup-Location</label>
+                        <input type="text" className="form-control" id="pickUpLocation"  value={pickUpLocation} onChange={(e) => setPickUpLocation(e.target.value)} required/>
                     </div>
                    
                     <button type="submit" onClick={registerButtonclicked} className="btn btn-primary btn-lg" style={{ marginLeft: "40%", marginTop: "20px" }}>Register</button>

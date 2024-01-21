@@ -14,6 +14,7 @@ const GiftAway = () => {
     const [category, setCategory] = useState("")
     const [myGiftaways, setMyGiftaways] = useState([])
     const [selectedCategory, setSelectedCategory] = useState("");
+    const [PickUpLocation, setPickUpLocation] = useState("");
 
 
 
@@ -53,7 +54,8 @@ const GiftAway = () => {
         formData.append("description", description)
         // formData.append("categoryName", category)
         formData.append("categoryName", selectedCategory);
-        formData.append("image", image)
+        formData.append("image", image);
+        formData.append("PickUpLocation", PickUpLocation);
 
         console.log(formData)
 
