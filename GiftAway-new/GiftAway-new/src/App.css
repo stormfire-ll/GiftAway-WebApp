@@ -64,7 +64,9 @@
     z-index: 2;
     width: 75%; 
     margin: auto; 
+    position: relative;
   }
+  
   
   .carousel-item img {
     z-index: 2;
