@@ -95,7 +95,7 @@ const GiftAway = () => {
         <div style={{ display: "flex", flexDirection: "row", width: "100% " }}>
 
             <div style={{ display: "flex", height: "100vh", alignContent: "center", justifyContent: "center", width: "50%", flex: 1 }}>
-                <div style={{ height: "50%", width: "70%", marginTop: "5rem", border: "2px", borderColor: "black", backgroundColor: "wheat", padding: "2rem", borderRadius: "2rem" }}>
+                <div style={{ height: "65%", width: "70%", marginTop: "5rem", border: "2px", borderColor: "black", backgroundColor: "wheat", padding: "2rem", borderRadius: "2rem" }}>
                     <form onSubmit={submitGiftAway}>
 
                         <div className="mb-3">
