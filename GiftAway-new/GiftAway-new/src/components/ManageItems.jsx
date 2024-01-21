@@ -19,15 +19,15 @@ const ManageItems = ({id, logo, title, description, onDelete, onEdit, onRetrieve
 
 // ------------ TO DO 
 
-  // const editIt = () => {
-  //   axios.patch(`http://localhost:4000/giftaway?giftawayId=${id}`, {
-  //     withCredentials: true
-  //   })
-  //   .then(res => {
-  //     onEdit(id);
-  //   })
-  //   .catch(err => console.log(err))
-  // }
+  const editIt = () => {
+    axios.patch(`http://localhost:4000/giftaway?giftawayId=${id}`, {
+      withCredentials: true
+    })
+    .then(res => {
+      onEdit(id);
+    })
+    .catch(err => console.log(err))
+  }
 
   // const retrievedIt = () => {
   //   axios.patch(`http://localhost:4000/giftaway?giftawayId=${id}`, { // LInk?
@@ -57,9 +57,9 @@ const ManageItems = ({id, logo, title, description, onDelete, onEdit, onRetrieve
           <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={deleteIt}>
             Delete me!
           </button>     
-          {/* <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={editIt}>
+          <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={editIt}>
             Edit
-          </button>  */}
+          </button> 
           {/* <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={retrievedIt}>
             Retrieved
           </button>    */}

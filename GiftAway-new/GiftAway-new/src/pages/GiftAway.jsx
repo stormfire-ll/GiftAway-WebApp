@@ -15,6 +15,16 @@ const GiftAway = () => {
     const [myGiftaways, setMyGiftaways] = useState([])
     const [selectedCategory, setSelectedCategory] = useState("");
 
+    // State variables for editing
+    const [editMode, setEditMode] = useState(false);
+    const [editItemId, setEditItemId] = useState(null);
+
+    // State variables for editing form
+    const [editTitle, setEditTitle] = useState('');
+    const [editDescription, setEditDescription] = useState('');
+    const [editCategory, setEditCategory] = useState('');
+    const [editImage, setEditImage] = useState(null);
+
     //für giftaway route get request um sich nur deine erstellen items anzuzeigen
     useEffect(() => {
         axios.get('http://localhost:4000/giftaway', {
@@ -53,15 +63,12 @@ const GiftAway = () => {
                 "Content-Type": "multipart/form-data",
             },
             withCredentials: true
-        }
-
-        )
-
-            .then((res) => {
-                console.log(res)
-                setMyGiftaways(prevGiftaways => [...prevGiftaways, res.data.createdGiftaway]);
-            })
-            .catch(err => console.log("Giftaway creation error", err))
+        })
+        .then((res) => {
+            console.log(res)
+            setMyGiftaways(prevGiftaways => [...prevGiftaways, res.data.createdGiftaway]);
+        })
+        .catch(err => console.log("Giftaway creation error", err))
     }
 
     //wird getriggert wenn man auf den delete button klickt und aktualisiert automatisch im frontend
@@ -69,29 +76,113 @@ const GiftAway = () => {
         setMyGiftaways(prevGiftaways => prevGiftaways.filter(item => item._id !== id));
     };
 
-    
     // ------------ TO DO 
-    const handleEdit = (id) => {
 
+    // Function to handle submit edit form
+    const submitEditGiftAway = (e) => {
+        e.preventDefault();
+
+        const image = editImage || myGiftaways.find((item) => item._id === editItemId).avatar;
+        //const image = e.target.elements.avatar.files[0];
+
+        const formData = new FormData();
+
+        formData.append('title', editTitle);
+        formData.append('description', editDescription);
+        formData.append('categoryName', editCategory);
+        formData.append('image', image);
+
+        axios
+            .patch(`http://localhost:4000/giftaway/${editItemId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                withCredentials: true,
+            })
+            .then((res) => {
+                // Update the edited item in the state
+                setMyGiftaways((prevGiftaways) =>
+                    prevGiftaways.map((item) => (item._id === editItemId ? res.data.updatedGiftaway : item))
+                );
+                handleCancelEdit(); // Reset the edit mode and form data
+            })
+            .catch((err) => console.log('Giftaway edit error', err));
     };
+
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category);
+    };
+
+    // Function to handle edit button click
+    const handleEdit = (id, title, description, category, image) => {
+        setEditMode(true);
+        setEditItemId(id);
+        setEditTitle(title);
+        setEditDescription(description);
+        setEditCategory(category);
+        // You may need to handle the image differently, e.g., using a separate file input for editing.
+    };
+
+    // Function to handle cancel editing
+    const handleCancelEdit = () => {
+        setEditMode(false);
+        setEditItemId(null);
+        setEditTitle('');
+        setEditDescription('');
+        setEditCategory('');
+        setEditImage(null);
+    };
+
     // ------------ TO DO 
     // const handleRetrieved = (id) => {
 
     // };
-    const handleCategorySelect = (category) => {
-        setSelectedCategory(category);
-};
-    
-
-
 
     return (
         <div style={{ display: "flex", flexDirection: "row", width: "100% " }}>
-
             <div style={{ display: "flex", height: "100vh", alignContent: "center", justifyContent: "center", width: "50%", flex: 1 }}>
                 <div style={{ height: "50%", width: "70%", marginTop: "5rem", border: "2px", borderColor: "black", backgroundColor: "wheat", padding: "2rem", borderRadius: "2rem" }}>
-                    <form onSubmit={submitGiftAway}>
+                    
+                {editMode ? (
+                    <form onSubmit={submitEditGiftAway}>
+                        {/* Similar form fields as the create form, but pre-filled with existing data */}
+                        <div className="mb-3">
+                        <label htmlFor="edit-avatar" className="form-label">
+                            Avatar
+                        </label>
+                        <input type="file" id="edit-avatar" accept="image/*" onChange={(e) => setEditImage(e.target.files[0])} />
+                        </div>
 
+                        <div className="mb-3">
+                        <label htmlFor="edit-title" className="form-label">
+                            Title
+                        </label>
+                        <input type="text" className="form-control" id="edit-title" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} required />
+                        </div>
+
+                        <div className="mb-3">
+                        <label htmlFor="edit-description" className="form-label">
+                            Description
+                        </label>
+                        <input type="text" className="form-control" id="edit-description" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} required />
+                        </div>
+
+                        <div className="mb-3">
+                        <label htmlFor="edit-category" className="form-label">
+                            Category
+                        </label>
+                        <input type="text" className="form-control" id="edit-category" value={editCategory} onChange={(e) => setEditCategory(e.target.value)} required />
+                        </div>
+
+                        <button type="submit" className="btn btn-primary btn-lg" style={{ marginLeft: '40%', marginTop: '20px' }}>
+                        Save Changes
+                        </button>
+                        <button type="button" className="btn btn-danger btn-lg" style={{ marginLeft: '20px', marginTop: '20px' }} onClick={handleCancelEdit}>
+                        Cancel
+                        </button>
+                    </form>
+                ) : (
+                    <form onSubmit={submitGiftAway}>
                         <div className="mb-3">
                             <label htmlFor="avatar" className="form-label">Avatar</label>
                             <input type="file" id="avatar" accept="image/*" />
@@ -110,25 +201,23 @@ const GiftAway = () => {
                             <label htmlFor="category" className="form-label">Category</label>
                             <input type="text" className="form-control" id="category" value={category} onChange={(e) => setCategory(e.target.value)} required />
                         </div> */}
-
                         <div className="mb-3">
                             <label htmlFor="category" className="form-label">Category</label>
                             <CategoryDropdown onCategorySelect={handleCategorySelect} />
                         </div>
 
-
-
                         <button type="submit" className="btn btn-primary btn-lg" style={{ marginLeft: "40%", marginTop: "20px" }}>Submit</button>
                     </form>
+                )}
                 </div>
             </div>
             <div style={{ width: "50%", flex: 1, backgroundColor: "wheat" }}>
                 <ul style={{ listStyleType: "none" }}>
                     {myGiftaways.map((item) => {
-                        return(
-                                <li key={item._id}><ManageItems id={item._id} logo={item.avatar} title={item.title} description={item.description} onDelete={handleDelete} onEdit={handleEdit} ></ManageItems></li> //onRetrieved={handleRetrieved}
-                    )})
-                        }
+                        return (
+                            <li key={item._id}><ManageItems id={item._id} logo={item.avatar} title={item.title} description={item.description} onDelete={handleDelete} onEdit={handleEdit} ></ManageItems></li> //onRetrieved={handleRetrieved}
+                        )
+                    })}
                 </ul>
             </div>
         </div>
