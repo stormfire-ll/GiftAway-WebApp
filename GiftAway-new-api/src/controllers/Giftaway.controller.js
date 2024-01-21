@@ -73,6 +73,7 @@ const getGiftaways = async (req, res) => {
         for (giftaway of allGiftaways) {
             if (giftaway.publisherId == userId) {
                 myGiftaways.push(giftaway);
+                // if consumerId exist; dann consumerId. nur namen rausholen
             }
         }
 

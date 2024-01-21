@@ -58,6 +58,7 @@ const Dashboard = () => {
             console.log(response.data); // Zum Debuggen
             setClaimedGiftaways(response.data.claimedGiftaways);
             setUnclaimedGiftaways(response.data.unclaimedGiftaways);
+            setReceivedGiftaways(response.data.receivedGiftaways);
         } catch (error) {
             console.error("Error fetching data:", error);
         }

@@ -1,30 +1,47 @@
 import React from 'react'
 import axios from 'axios'
 
-const ReceivedItems = ({ logo, title, description, mail, phone, id }) =>{
-    return (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ display: "flex", flexDirection: "row" }}>
-                <img src={logo} style={{ width: "50px", height: "50px", margin: "5px", borderRadius: "10px" }} />
-                <h5 style={{ padding: "15px" }}>{title}</h5>
-            </div>
-            <div style={{ display: "flex", width: "80%", marginLeft: "75px", textAlign: "left", flexDirection: "row", justifyContent: "space-between" }}>
-                <div>
-                    <p style={{ flex: 1, padding: "2px" }}>
-                        {description}
-                    </p>
-                    <p >mail: {mail}</p>
-                    <p >phone: {phone}</p>
-                </div>
-                <div>
-                    <button className="btn btn-warning" style={{ height: "40px", marginTop: "4px" }} onClick={unClaimIt}>
-                        Unclaim
-                    </button>
-                </div>
 
-            </div>
+
+const CardItems = ({ id, logo, title, description, onClaimIt, mail, phone }) => {
+
+
+  const claimIt = (e) => {
+    axios.patch("http://localhost:4000/dashboard/claimit", {
+
+      giftawayId: id,
+
+
+    }, {
+      withCredentials: true
+    })
+      .then(response => {
+
+        onClaimIt(id, response.data.consumerId);
+      })
+
+      .catch(err => console.log(err))
+
+  }
+
+  
+
+  return (
+    <div style={{ display: "flex", flexDirection: "row" }} >
+      <div className='leftCardItem'>
+        <img src={logo} style={{ width: "100px", height: "100px", margin: "5px", borderRadius: "10px" }} />
+      </div>
+      <div className='rightCardItem' style={{ textAlign: "left", paddingLeft: "10px" }}>
+        <h2>{title}</h2>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <p style={{ flex: 1, padding: "2px" }}>
+            {description}
+          </p>
         </div>
-    )
+      </div>
+
+    </div>
+  )
 }
 
-export default ReceivedItems
+export default CardItems

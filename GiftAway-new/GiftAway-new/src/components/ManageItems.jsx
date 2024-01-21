@@ -1,8 +1,11 @@
 import React from 'react'
 import axios from 'axios'
+import { useState } from 'react';
+
 
 const ManageItems = ({id, logo, title, description, onDelete, onRetrieved  }) => { //onEdit
-  // const [retrieved, setRetrieved] = useState(false); //?
+  // const [retrieved, setRetrieved] = useState(false);
+  const [retrieverId, setRetrieverId] = useState(null);
 
   //löscht einen eintrag aus der db 
   const deleteIt = () => {
@@ -17,6 +20,21 @@ const ManageItems = ({id, logo, title, description, onDelete, onRetrieved  }) =>
     .catch(err => console.log(err))
   }  
 
+  const retrievedIt = (e) => {
+    axios.get(`http://localhost:4000/giftaway`, {
+      giftawayId: id,
+    },
+    {
+      withCredentials: true
+    })
+    .then(response => {
+      const newRetrieverId = response.data.retrieverId;
+      setRetrieverId(newRetrieverId);
+      onRetrieved(id, newRetrieverId);
+    })
+    .catch(err => console.log(err))
+  }
+
 // ------------ TO DO 
 
   // const editIt = () => {
@@ -28,18 +46,6 @@ const ManageItems = ({id, logo, title, description, onDelete, onRetrieved  }) =>
   //   })
   //   .catch(err => console.log(err))
   // }
-
-  const retrievedIt = () => {
-    axios.patch(`http://localhost:4000/giftaway?giftawayId=${id}`, {
-    },
-    {
-      withCredentials: true
-    })
-    .then(res => {
-      onRetrieved(id);
-    })
-    .catch(err => console.log(err))
-  }
 
   return (
     
@@ -62,6 +68,14 @@ const ManageItems = ({id, logo, title, description, onDelete, onRetrieved  }) =>
           <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={retrievedIt}>
             Retrieved
           </button>   
+          {retrieverId && (
+            <input
+              type="text"
+              value={retrieverId}
+              readOnly
+              style={{ height: '40px', marginLeft: '10px', border: '1px solid #ccc', padding: '5px' }}
+            />
+          )}
         </div>
       </div>
 

@@ -14,7 +14,7 @@ const GiftAway = () => {
     const [category, setCategory] = useState("")
     const [myGiftaways, setMyGiftaways] = useState([])
     const [selectedCategory, setSelectedCategory] = useState("");
-
+    const [retrievedGiftaways, setRetrievedGiftaways] = useState([])
 
 
     //für giftaway route get request um sich nur deine erstellen items anzuzeigen
@@ -27,6 +27,7 @@ const GiftAway = () => {
             .then((res) => {
                 const myGiftaways = res.data.giftaways
                 setMyGiftaways(myGiftaways)
+                
             })
 
             .catch(err => console.log(err))
@@ -70,6 +71,10 @@ const GiftAway = () => {
 
     const handleCategorySelect = (category) => {
         setSelectedCategory(category);
+    };
+        // ------------ TO DO 
+    const handleRetrieved = (id) => {
+        setRetrievedGiftaways(retrievedGiftaways);
     };
 
         //EDIT-------------------------
@@ -137,10 +142,7 @@ const GiftAway = () => {
     //     setEditImage(null);
     // };
 
-    // ------------ TO DO 
-    // const handleRetrieved = (id) => {
 
-    // };
 
     return (
         <div style={{ display: "flex", flexDirection: "row", width: "100% " }}>
@@ -188,7 +190,9 @@ const GiftAway = () => {
                                 logo={item.avatar} 
                                 title={item.title} 
                                 description={item.description} 
+                                consumerId={item.consumerId}
                                 onDelete={handleDelete}
+                                
                                  >
                                 </ManageItems></li> //  onEdit={handleEdit} onRetrieved={handleRetrieved}
                         )
