@@ -68,32 +68,30 @@ const Dashboard = () => {
     //claim funktion damit es auch automatisch aktualisiert wird im frontend wenn man claimt, und fügt eine consumerId hinzu
     //zeigt dann nur die contactinformation an
     const handleClaimIt = async (id, consumer_id) => {
+        if (!consumer_id) {
+            // Zeigt das Login-Popup an, wenn der Benutzer nicht eingeloggt ist
+            handleLoginPopup();
+            return;
+        }
+
         try {
             const res = await axios.post("http://localhost:4000/dashboard/getuser", { id: consumer_id }, {
-
                 withCredentials: true
-            })
-            const phone = res.data.phone
-            const mail = res.data.mail
-            const claimedItem = unclaimedGiftaways.find(item => item._id == id)
+            });
+            const phone = res.data.phone;
+            const mail = res.data.mail;
+            const claimedItem = unclaimedGiftaways.find(item => item._id === id);
 
-            //automatische änderung im frontend
+            // Automatische Änderung im Frontend
             if (claimedItem) {
-                setUnclaimedGiftaways(prev => prev.filter(item => item._id != id))
-                setClaimedGiftaways(prev => [...prev, { ...claimedItem, phone, mail }])
+                setUnclaimedGiftaways(prev => prev.filter(item => item._id !== id));
+                setClaimedGiftaways(prev => [...prev, { ...claimedItem, phone, mail }]);
             }
-
+        } catch (err) {
+            console.error('An unexpected error occurred: ', err);
         }
+    };
 
-        catch (err) {
-            if (err.response && err.response.status === 404) {
-                handleLoginPopup();
-            }
-            else {
-                console.error('An unexpected error occurred: ', err);
-            }
-        }
-    }
 
     const handleUnclaimIt = (id) => {
 
@@ -188,7 +186,7 @@ const Dashboard = () => {
                 </div>
             </div>
         </>
-    )
+)
 }
 
 export default Dashboard
