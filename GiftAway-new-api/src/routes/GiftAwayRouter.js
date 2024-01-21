@@ -1,6 +1,6 @@
 const express = require('express');
 const storage = require('../middlewares/multer.middleware')
-const {createGiftaway, deleteGiftaway, getGiftaways, editGiftAway, receivedGiftaway } = require('../controllers/Giftaway.controller')
+const {createGiftaway, deleteGiftaway, getGiftaways, editGiftAway,  } = require('../controllers/Giftaway.controller') //receivedGiftaway
 
 
 const giftAwayRouter = express.Router();
@@ -13,6 +13,6 @@ giftAwayRouter.delete('/', deleteGiftaway)
 giftAwayRouter.get('/', getGiftaways)
 
 giftAwayRouter.patch('/edit', editGiftAway)
-giftAwayRouter.patch('/received', receivedGiftaway)
+//giftAwayRouter.patch('/received', receivedGiftaway)
 
 module.exports = giftAwayRouter;

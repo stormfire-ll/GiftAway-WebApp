@@ -131,4 +131,4 @@ const editGiftAway = async (req, res) => {
 // }
 
 
-module.exports = { createGiftaway, deleteGiftaway, getGiftaways, editGiftAway, receivedGiftaway };
+module.exports = { createGiftaway, deleteGiftaway, getGiftaways, editGiftAway,  }; //receivedGiftaway
