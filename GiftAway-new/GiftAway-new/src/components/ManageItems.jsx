@@ -20,7 +20,7 @@ const ManageItems = ({id, logo, title, description, onDelete, onEdit, onRetrieve
 // ------------ TO DO 
 
   const editIt = () => {
-    axios.patch(`http://localhost:4000/giftaway?giftawayId=${id}`, {
+    axios.get(`http://localhost:4000/giftaway?giftawayId=${id}`, {
       withCredentials: true
     })
     .then(res => {

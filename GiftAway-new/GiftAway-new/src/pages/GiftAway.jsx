@@ -82,18 +82,18 @@ const GiftAway = () => {
     const submitEditGiftAway = (e) => {
         e.preventDefault();
 
-        const image = editImage || myGiftaways.find((item) => item._id === editItemId).avatar;
-        //const image = e.target.elements.avatar.files[0];
+        const editImage = e.target.elements.avatar.files[0];
 
         const formData = new FormData();
 
+        formData.append('_id', editItemId);
         formData.append('title', editTitle);
         formData.append('description', editDescription);
         formData.append('categoryName', editCategory);
-        formData.append('image', image);
+        formData.append('image', editImage);
 
         axios
-            .patch(`http://localhost:4000/giftaway/${editItemId}`, formData, {
+            .patch(`http://localhost:4000/giftaway/edit/${editItemId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -168,10 +168,8 @@ const GiftAway = () => {
                         </div>
 
                         <div className="mb-3">
-                        <label htmlFor="edit-category" className="form-label">
-                            Category
-                        </label>
-                        <input type="text" className="form-control" id="edit-category" value={editCategory} onChange={(e) => setEditCategory(e.target.value)} required />
+                            <label htmlFor="category" className="form-label">Category</label>
+                            <CategoryDropdown onCategorySelect={handleCategorySelect} />
                         </div>
 
                         <button type="submit" className="btn btn-primary btn-lg" style={{ marginLeft: '40%', marginTop: '20px' }}>
@@ -214,8 +212,20 @@ const GiftAway = () => {
             <div style={{ width: "50%", flex: 1, backgroundColor: "wheat" }}>
                 <ul style={{ listStyleType: "none" }}>
                     {myGiftaways.map((item) => {
+                        if (!item) {
+                            //console.log("Warning: Found undefined item in myGiftaways array.");
+                            return null;
+                        }
                         return (
-                            <li key={item._id}><ManageItems id={item._id} logo={item.avatar} title={item.title} description={item.description} onDelete={handleDelete} onEdit={handleEdit} ></ManageItems></li> //onRetrieved={handleRetrieved}
+                            <li key={item._id}>
+                                <ManageItems 
+                                id={item._id} 
+                                logo={item.avatar} 
+                                title={item.title} 
+                                description={item.description} 
+                                onDelete={handleDelete} 
+                                onEdit={handleEdit} >
+                                	</ManageItems></li> //onRetrieved={handleRetrieved}
                         )
                     })}
                 </ul>

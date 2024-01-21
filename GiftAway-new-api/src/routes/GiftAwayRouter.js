@@ -12,7 +12,7 @@ giftAwayRouter.delete('/', deleteGiftaway)
 
 giftAwayRouter.get('/', getGiftaways)
 
-giftAwayRouter.patch('/edit', editGiftAway)
+giftAwayRouter.patch('/edit/:giftawayId', editGiftAway)
 //giftAwayRouter.patch('/received', receivedGiftaway)
 
 module.exports = giftAwayRouter;
