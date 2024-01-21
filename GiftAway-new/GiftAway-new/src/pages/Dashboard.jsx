@@ -4,6 +4,7 @@ import ClaimedItems from '../components/ClaimedItems'
 import CategoryDropdown from '../components/CategoryDropdown'
 import Navbar from '../components/Navbar'
 import LoginPopup from '../components/LoginPopup';
+import UncontrolledExample from '../components/UncontrolledExample'
 import axios from 'axios'
 
 
@@ -147,6 +148,7 @@ const Dashboard = () => {
         <>
             {showLoginPopup && <LoginPopup onClose={closeLoginPopup} />}
             {/* <Navbar /> */}
+            <UncontrolledExample />
             <div className="dashboardWrapper" style={{ padding: "5px", paddingTop: "2rem" }}>
                 <div className="text-center" style={{ height: "90vh" }}>
                     <div >
