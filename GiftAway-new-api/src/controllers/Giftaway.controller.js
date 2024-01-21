@@ -73,6 +73,7 @@ const getGiftaways = async (req, res) => {
         for (giftaway of allGiftaways) {
             if (giftaway.publisherId == userId) {
                 myGiftaways.push(giftaway);
+                // if consumerId exist; dann consumerId. nur namen rausholen
             }
         }
 
@@ -115,20 +116,20 @@ const editGiftAway = async (req, res) => {
     }
 };
 
-// Funktion zum Receiven eines Giftaways
-// const receivedGiftaway = async (req, res) => {
-//     const userId = req.cookies.userId || req.body.userId;
-//     const { giftawayId, consumerId } = req.body;
+//Funktion zum Receiven eines Giftaways
+const retrievedGiftaway = async (req, res) => {
+    const userId = req.cookies.userId || req.body.userId;
+    const { giftawayId, consumerId } = req.body;
 
-//     const giftaway = await Giftaway.findByIdAndUpdate(giftawayId, {
-//         $unset: { consumerId: 1 },
-//         receiverId: userId,
-//         deactivate: true,
-//     }, {
-//         new: true
-//     });
-//     res.status(201).json('Erfolgreich aktualisiert');
-// }
+    const giftaway = await Giftaway.findByIdAndUpdate(giftawayId, {
+        $unset: { consumerId: 1 },
+        retrieverId: userId,
+        deactivate: true,
+    }, {
+        new: true
+    });
+    res.status(201).json('Erfolgreich aktualisiert');
+}
 
 
-module.exports = { createGiftaway, deleteGiftaway, getGiftaways, editGiftAway,  }; //receivedGiftaway
+module.exports = { createGiftaway, deleteGiftaway, getGiftaways, editGiftAway, retrievedGiftaway }; 

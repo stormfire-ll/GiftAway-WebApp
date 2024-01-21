@@ -1,8 +1,11 @@
 import React from 'react'
 import axios from 'axios'
+import { useState } from 'react';
 
-const ManageItems = ({id, logo, title, description, onDelete, onEdit, onRetrieved}) => {
-  // const [retrieved, setRetrieved] = useState(false); //?
+
+const ManageItems = ({id, logo, title, description, onDelete, onRetrieved  }) => { //onEdit
+  // const [retrieved, setRetrieved] = useState(false);
+  const [retrieverId, setRetrieverId] = useState(null);
 
   //löscht einen eintrag aus der db 
   const deleteIt = () => {
@@ -17,27 +20,29 @@ const ManageItems = ({id, logo, title, description, onDelete, onEdit, onRetrieve
     .catch(err => console.log(err))
   }  
 
-// ------------ TO DO 
-
-  const editIt = () => {
-    axios.get(`http://localhost:4000/giftaway?giftawayId=${id}`, {
+  const retrievedIt = (e) => {
+    axios.get(`http://localhost:4000/giftaway`, {
+      giftawayId: id,
+    },
+    {
       withCredentials: true
     })
-    .then(res => {
-      onEdit(id);
+    .then(response => {
+      const newRetrieverId = response.data.retrieverId;
+      setRetrieverId(newRetrieverId);
+      onRetrieved(id, newRetrieverId);
     })
     .catch(err => console.log(err))
   }
 
-  // const retrievedIt = () => {
-  //   axios.patch(`http://localhost:4000/giftaway?giftawayId=${id}`, { // LInk?
-  //       //???
-  //   },
-  //   {
+// ------------ TO DO 
+
+  // const editIt = () => {
+  //   axios.get(`http://localhost:4000/giftaway?giftawayId=${id}`, {
   //     withCredentials: true
   //   })
   //   .then(res => {
-  //     onRetrieved(id);
+  //     onEdit(id);
   //   })
   //   .catch(err => console.log(err))
   // }
@@ -57,12 +62,20 @@ const ManageItems = ({id, logo, title, description, onDelete, onEdit, onRetrieve
           <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={deleteIt}>
             Delete me!
           </button>     
-          <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={editIt}>
+          {/* <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={editIt}>
             Edit
-          </button> 
-          {/* <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={retrievedIt}>
+          </button>  */}
+          <button className="btn btn-warning" style={{ height: "40px", marginLeft: "10px" }} onClick={retrievedIt}>
             Retrieved
-          </button>    */}
+          </button>   
+          {retrieverId && (
+            <input
+              type="text"
+              value={retrieverId}
+              readOnly
+              style={{ height: '40px', marginLeft: '10px', border: '1px solid #ccc', padding: '5px' }}
+            />
+          )}
         </div>
       </div>
 
