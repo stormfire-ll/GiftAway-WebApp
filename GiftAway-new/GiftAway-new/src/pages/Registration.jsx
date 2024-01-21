@@ -59,7 +59,7 @@ const Registration = () => {
         <>
         {showErrorPopup && <ErrorPopup message={errorMessage} onClose={closeErrorPopup} />}
         <div style={{ display: "flex", height: "100vh", alignContent: "center", justifyContent: "center" }}>
-            <div style={{ height: "50%", width: "30%", marginTop: "5rem", border: "2px", borderColor: "black", backgroundColor: "wheat", padding: "2rem", borderRadius: "2rem" }}>
+            <div style={{ height: "80%", width: "30%", marginTop: "5rem", border: "2px", borderColor: "black", backgroundColor: "wheat", padding: "2rem", borderRadius: "2rem" }}>
                 <form>
                     <div className="mb-3">
                         <label htmlFor="username" className="form-label">Username</label>
