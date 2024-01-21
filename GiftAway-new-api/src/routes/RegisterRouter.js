@@ -6,10 +6,10 @@ const express = require('express')
 const registerRouter = express.Router();
 
 registerRouter.post("/", async (req, res) => {
-    const { username, password, mail, phone } = req.body;
+    const { username, password, mail, phone, pickuplocation } = req.body;
 
     // Überprüfen, ob einer der Eingabewerte leer oder nur aus Leerzeichen besteht
-    if ([username, password, mail, phone].some(item => !item || (typeof item === 'string' && item.trim() === ""))) {
+    if ([username, password, mail, phone, pickuplocation ].some(item => !item || (typeof item === 'string' && item.trim() === ""))) {
         return res.status(400).json({ message: 'All fields are required' });
     }
     
@@ -28,7 +28,8 @@ registerRouter.post("/", async (req, res) => {
             username,
             password: hashedPassword, 
             mail,
-            phone
+            phone,
+            pickuplocation,
         });
 
         // Erstellen eines Access-Tokens

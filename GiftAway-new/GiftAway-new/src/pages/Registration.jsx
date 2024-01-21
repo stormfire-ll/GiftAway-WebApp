@@ -75,6 +75,10 @@ const Registration = () => {
                         <label htmlFor="password" className="form-label">Password</label>
                         <input type="password" className="form-control" id="password"  value={password} onChange={(e) => setPassword(e.target.value)} required/>
                     </div>
+                    <div className="mb-3">
+                        <label htmlFor="pickuplocation" className="form-label">Pickup-Location (Optional)</label>
+                        <input type="pickuplocation" className="form-control" id="pickuplocation" value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} required/>
+                    </div>
                    
                     <button type="submit" onClick={registerButtonclicked} className="btn btn-primary btn-lg" style={{ marginLeft: "40%", marginTop: "20px" }}>Register</button>
                 </form>

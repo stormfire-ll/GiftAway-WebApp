@@ -7,7 +7,7 @@ const User = new mongoose.Schema({
     },
     password: {
         type: String,
-        require: true
+        require: true,
     },
     mail: {
         type: String,
@@ -15,8 +15,12 @@ const User = new mongoose.Schema({
     },
     phone: {
         type: String,
-        require: true
-    }
+        require: true,
+    },
+    pickuplocation: {
+        type: String,
+        require: true,
+    },
 })
 
 module.exports = mongoose.model("Users", User)
