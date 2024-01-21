@@ -72,77 +72,6 @@ const GiftAway = () => {
     const handleCategorySelect = (category) => {
         setSelectedCategory(category);
     };
-        // ------------ TO DO 
-    const handleRetrieved = (id) => {
-        setRetrievedGiftaways(retrievedGiftaways);
-    };
-
-        //EDIT-------------------------
-
-    // State variables for editing
-    // const [editMode, setEditMode] = useState(false);
-    // const [editItemId, setEditItemId] = useState(null);
-
-    // // State variables for editing form
-    // const [editTitle, setEditTitle] = useState('');
-    // const [editDescription, setEditDescription] = useState('');
-    // const [editCategory, setEditCategory] = useState('');
-    // const [editImage, setEditImage] = useState(null);
-
-    // ------------ EDIT
-    // Function to handle submit edit form
-    // const submitEditGiftAway = (e) => {
-    //     e.preventDefault();
-
-    //     const editImage = e.target.elements.avatar.files[0];
-
-    //     const formData = new FormData();
-
-    //     formData.append('_id', editItemId);
-    //     formData.append('title', editTitle);
-    //     formData.append('description', editDescription);
-    //     formData.append('categoryName', editCategory);
-    //     formData.append('image', editImage);
-
-    //     axios
-    //         .patch(`http://localhost:4000/giftaway/edit/${editItemId}`, formData, {
-    //             headers: {
-    //                 'Content-Type': 'multipart/form-data',
-    //             },
-    //             withCredentials: true,
-    //         })
-    //         .then((res) => {
-    //             // Update the edited item in the state
-    //             setMyGiftaways((prevGiftaways) =>
-    //                 prevGiftaways.map((item) => (item._id === editItemId ? res.data.updatedGiftaway : item))
-    //             );
-    //             handleCancelEdit(); // Reset the edit mode and form data
-    //         })
-    //         .catch((err) => console.log('Giftaway edit error', err));
-    // };
-
-
-    // Function to handle edit button click
-    // const handleEdit = (id, title, description, category, image) => {
-    //     setEditMode(true);
-    //     setEditItemId(id);
-    //     setEditTitle(title);
-    //     setEditDescription(description);
-    //     setEditCategory(category);
-    //     // You may need to handle the image differently, e.g., using a separate file input for editing.
-    // };
-
-    // // Function to handle cancel editing
-    // const handleCancelEdit = () => {
-    //     setEditMode(false);
-    //     setEditItemId(null);
-    //     setEditTitle('');
-    //     setEditDescription('');
-    //     setEditCategory('');
-    //     setEditImage(null);
-    // };
-
-
 
     return (
         <div style={{ display: "flex", flexDirection: "row", width: "100% " }}>
@@ -163,10 +92,6 @@ const GiftAway = () => {
                             <label htmlFor="description" className="form-label">Description</label>
                             <input type="text" className="form-control" id="description" value={description} onChange={e => setDescription(e.target.value)} required />
                         </div>
-                        {/*   <div className="mb-3">
-                            <label htmlFor="category" className="form-label">Category</label>
-                            <input type="text" className="form-control" id="category" value={category} onChange={(e) => setCategory(e.target.value)} required />
-                        </div> */}
                         <div className="mb-3">
                             <label htmlFor="category" className="form-label">Category</label>
                             <CategoryDropdown onCategorySelect={handleCategorySelect} />
@@ -192,9 +117,8 @@ const GiftAway = () => {
                                 description={item.description} 
                                 consumerId={item.consumerId}
                                 onDelete={handleDelete}
-                                
                                  >
-                                </ManageItems></li> //  onEdit={handleEdit} onRetrieved={handleRetrieved}
+                                </ManageItems></li>
                         )
                     })}
                 </ul>
