@@ -12,7 +12,7 @@ const Registration = () => {
     const [mail, setMail] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
     const [password, setPassword] = useState("")
-    const [pickupLocation, setPickUpLocation] = useState("")
+    const [pickUpLocation, setPickUpLocation] = useState("")
 
     
     const [errorMessage, setErrorMessage] = useState('');
@@ -80,7 +80,7 @@ const Registration = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="pickuplocation" className="form-label">Pickup-Location (Optional)</label>
-                        <input type="pickuplocation" className="form-control" id="pickuplocation" value={pickupLocation} onChange={(e) => setPickUpLocation(e.target.value)} required/>
+                        <input type="pickuplocation" className="form-control" id="pickuplocation" value={pickUpLocation} onChange={(e) => setPickUpLocation(e.target.value)} required/>
                     </div>
                    
                     <button type="submit" onClick={registerButtonclicked} className="btn btn-primary btn-lg" style={{ marginLeft: "40%", marginTop: "20px" }}>Register</button>

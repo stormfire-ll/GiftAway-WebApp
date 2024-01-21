@@ -17,7 +17,7 @@ const User = new mongoose.Schema({
         type: String,
         require: true,
     },
-    pickuplocation: {
+    pickUplocation: {
         type: String,
         require: true,
     },
