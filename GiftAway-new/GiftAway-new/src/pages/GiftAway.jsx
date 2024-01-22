@@ -129,12 +129,16 @@ const GiftAway = () => {
                             <label htmlFor="description" className="form-label">Description</label>
                             <input type="text" className="form-control" id="description" value={description} onChange={e => setDescription(e.target.value)} required />
                         </div>
-                        {pickUpLocation !== undefined && (
+                        <div className="mb-3">
+                                <label htmlFor="pickUpLocation" className="form-label">Pickup Location</label>
+                                <input type="text" className="form-control" id="pickUpLocation" value={pickUpLocation} onChange={e => setPickUpLocation(e.target.value)} required />
+                            </div>
+                        {/* {pickUpLocation !== undefined && (
                             <div className="mb-3">
                                 <label htmlFor="pickUpLocation" className="form-label">Pickup Location</label>
                                 <input type="text" className="form-control" id="pickUpLocation" value={pickUpLocation} onChange={e => setPickUpLocation(e.target.value)} required />
                             </div>
-                        )}
+                        )} */}
                         {/*   <div className="mb-3">
                             <label htmlFor="category" className="form-label">Category</label>
                             <input type="text" className="form-control" id="category" value={category} onChange={(e) => setCategory(e.target.value)} required />
