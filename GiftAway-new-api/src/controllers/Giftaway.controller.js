@@ -2,12 +2,13 @@ const cloudinary = require('cloudinary').v2; // Das 'cloudinary'-Modul wird impo
 const uploadOnCloudinary = require("../utils/cloudinary"); // Funktion zum Hochladen von Bildern auf Cloudinary
 const Giftaway = require('../db/giftAway.models'); 
 const Category = require('../db/category.model'); 
+const User = require('../db/register.models');
 
 // Funktion zum Erstellen eines Giftaways
 const createGiftaway = async (req, res) => {
     const publisherId = req.cookies.userId; // Die Benutzer-ID des Erstellers wird aus den Cookies extrahiert
 
-    const { title, description, categoryName } = req.body; // Daten des  Giftaways werden aus der Anfrage extrahiert
+    const { title, description, categoryName, pickUpLocation } = req.body; // Daten des  Giftaways werden aus der Anfrage extrahiert
     console.log(req.files); 
     const avatar = req.files.image[0].path; // Der Dateipfad des Avatar-Bilds wird aus der Anfrage extrahiert
 
@@ -38,7 +39,8 @@ const createGiftaway = async (req, res) => {
 
     // Wenn das  Giftaway noch nicht existiert, wird es erstellt
     if (!giftawayPresent) {
-        const createdGiftaway = await Giftaway.create({ avatar: avatarPath, title, description, categoryId, publisherId })
+        const createdGiftaway = await Giftaway.create({ avatar: avatarPath, title, description, categoryId, publisherId, pickUpLocation })
+        console.log("Newly Created Giftaway:",createdGiftaway)
         res.status(201).json({ createdGiftaway });
     } else {
         res.status(200).json('Giftaway exists');
@@ -60,7 +62,60 @@ const deleteGiftaway = async (req, res) => {
     }
 }
 
+// const getGiftaways = async (req, res) => {
+//     const userId = req.cookies.userId; // Die Benutzer-ID wird aus den Cookies extrahiert
+
+//     const myGiftaways = await Giftaway.aggregate([
+//         {
+//             $match: { publisherId: userId }
+//         },
+//         {
+//             $lookup: {
+//                 from: 'Users',
+//                 localField: 'publisherId',
+//                 foreignField: '_id',
+//                 as: 'userDetails'
+//             }
+//         },
+//         {
+//             $unwind: '$userDetails'
+//         },
+//         {
+//             $project: {
+//                 // Include all fields from Giftaway schema
+//                 avatar: 1,
+//                 title: 1,
+//                 description: 1,
+//                 categoryId: 1,
+//                 consumerId: 1,
+//                 publisherId: 1,
+//                 pickUpLocation: '$userDetails.pickUpLocation'
+//                 // Add other fields you need from the Giftaway model
+//             }
+//         }
+//     ]);
+
+//     res.status(200).json({ giftaways: myGiftaways });
+// };
 // Funktion zum Abrufen der  Giftaways eines bestimmten Benutzers
+
+const userpickuplocation = async (req, res) => {
+    const userId = req.cookies.userId;
+
+    try {
+        const user = await User.findById(userId, 'pickUpLocation'); // Fetch only the pickUpLocation field
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({ pickUpLocation: user.pickUpLocation }); 
+    } catch (error) {
+        console.error('Error fetching user pickUpLocation:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 const getGiftaways = async (req, res) => {
     const userId = req.cookies.userId // Die Benutzer-ID wird aus den Cookies extrahiert
 
@@ -84,4 +139,5 @@ else {
 }
 
 
-module.exports = { createGiftaway, deleteGiftaway, getGiftaways };
+
+module.exports = { createGiftaway, deleteGiftaway, getGiftaways, userpickuplocation };

@@ -14,13 +14,14 @@ const GiftAway = () => {
     const [category, setCategory] = useState("")
     const [myGiftaways, setMyGiftaways] = useState([])
     const [selectedCategory, setSelectedCategory] = useState("");
-    const [PickUpLocation, setPickUpLocation] = useState("");
+    const [pickUpLocation, setPickUpLocation] = useState("");
+
 
 
 
     //für giftaway route get request um sich nur deine erstellen items anzuzeigen
     useEffect(() => {
-        axios.get('http://localhost:4000/giftaway', {
+        axios.get('http://localhost:4000/giftaway/mygiftaways', {
 
             withCredentials: true
 
@@ -28,9 +29,27 @@ const GiftAway = () => {
             .then((res) => {
                 const myGiftaways = res.data.giftaways
                 setMyGiftaways(myGiftaways)
+                
+                // Extract pickUpLocation from the first item in myGiftaways (assuming it's the same for all)
+                const userPickUpLocation = myGiftaways.length > 0 ? myGiftaways[0].pickUpLocation : "";
+                setPickUpLocation(userPickUpLocation);
             })
 
             .catch(err => console.log(err))
+    }, []);
+
+    // Fetch user's pickUpLocation
+    useEffect(() => {
+        axios.get('http://localhost:4000/giftaway/userpickuplocation', { withCredentials: true })
+            .then((res) => {
+                console.log(res.data); 
+                const user = res.data.user;
+                //setPickUpLocation(user.pickUpLocation || ""); // Set the pickup location or an empty string if not available
+                const newPickUpLocation = user && user.pickUpLocation ? user.pickUpLocation : "";
+                setPickUpLocation(prevPickUpLocation => newPickUpLocation || prevPickUpLocation);
+                console.log("pickUpLocation:", newPickUpLocation);
+            })
+            .catch(err => console.log(err));
     }, []);
 
     //funktion für den gesamten upload eines items in die datenbank, wird getriggert sobald man auf den button klickt
@@ -40,6 +59,7 @@ const GiftAway = () => {
         setDescription("");
         setSelectedImage(null);
         setSelectedCategory("");
+        //setPickUpLocation("");
     };
 
     const submitGiftAway = (e) => {
@@ -55,7 +75,7 @@ const GiftAway = () => {
         // formData.append("categoryName", category)
         formData.append("categoryName", selectedCategory);
         formData.append("image", image);
-        formData.append("PickUpLocation", PickUpLocation);
+        formData.append("pickUpLocation", pickUpLocation);
 
         console.log(formData)
 
@@ -65,10 +85,7 @@ const GiftAway = () => {
                 "Content-Type": "multipart/form-data",
             },
             withCredentials: true
-        }
-
-        )
-
+        })
         .then((res) => {
             console.log(res)
             setMyGiftaways(prevGiftaways => [...prevGiftaways, res.data.createdGiftaway]);
@@ -112,11 +129,12 @@ const GiftAway = () => {
                             <label htmlFor="description" className="form-label">Description</label>
                             <input type="text" className="form-control" id="description" value={description} onChange={e => setDescription(e.target.value)} required />
                         </div>
-
-                        <div className="mb-3">
-                            <label htmlFor="pickUpLocation" className="form-label">Pickup Location</label>
-                            <input type="text" className="form-control" id="pickUpLocation" value={pickUpLocation} onChange={e => setPickUpLocation(e.target.value)} required />
-                        </div>
+                        {pickUpLocation !== undefined && (
+                            <div className="mb-3">
+                                <label htmlFor="pickUpLocation" className="form-label">Pickup Location</label>
+                                <input type="text" className="form-control" id="pickUpLocation" value={pickUpLocation} onChange={e => setPickUpLocation(e.target.value)} required />
+                            </div>
+                        )}
                         {/*   <div className="mb-3">
                             <label htmlFor="category" className="form-label">Category</label>
                             <input type="text" className="form-control" id="category" value={category} onChange={(e) => setCategory(e.target.value)} required />
@@ -137,7 +155,7 @@ const GiftAway = () => {
                 <ul style={{ listStyleType: "none" }}>
                     {myGiftaways.map((item) => {
                         return (
-                            <li key={item._id}><ManageItems id={item._id} logo={item.avatar} title={item.title} description={item.description} onDelete={handleDelete} ></ManageItems></li>
+                            <li key={item._id}><ManageItems id={item._id} logo={item.avatar} title={item.title} description={item.description} pickUpLocation={item.pickUpLocation} onDelete={handleDelete} ></ManageItems></li>
                         )
                     })
                     }
