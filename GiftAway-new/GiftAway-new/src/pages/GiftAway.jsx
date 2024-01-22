@@ -14,7 +14,9 @@ const GiftAway = () => {
     const [category, setCategory] = useState("")
     const [myGiftaways, setMyGiftaways] = useState([])
     const [selectedCategory, setSelectedCategory] = useState("");
-    const [pickUpLocation, setPickUpLocation] = useState("")
+    const [PickUpLocation, setPickUpLocation] = useState("");
+
+
 
     //für giftaway route get request um sich nur deine erstellen items anzuzeigen
     useEffect(() => {
@@ -32,6 +34,14 @@ const GiftAway = () => {
     }, []);
 
     //funktion für den gesamten upload eines items in die datenbank, wird getriggert sobald man auf den button klickt
+
+    const clearFormFields = () => {
+        setTitle("");
+        setDescription("");
+        setSelectedImage(null);
+        setSelectedCategory("");
+    };
+
     const submitGiftAway = (e) => {
         e.preventDefault();
 
@@ -44,8 +54,8 @@ const GiftAway = () => {
         formData.append("description", description)
         // formData.append("categoryName", category)
         formData.append("categoryName", selectedCategory);
-        formData.append("image", image)
-        formData.append("image", pickUpLocation)
+        formData.append("image", image);
+        formData.append("PickUpLocation", PickUpLocation);
 
         console.log(formData)
 
@@ -59,11 +69,14 @@ const GiftAway = () => {
 
         )
 
-            .then((res) => {
-                console.log(res)
-                setMyGiftaways(prevGiftaways => [...prevGiftaways, res.data.createdGiftaway]);
-            })
-            .catch(err => console.log("Giftaway creation error", err))
+        .then((res) => {
+            console.log(res)
+            setMyGiftaways(prevGiftaways => [...prevGiftaways, res.data.createdGiftaway]);
+
+            // Clear form fields after successful submission
+            clearFormFields();
+        })
+        .catch(err => console.log("Giftaway creation error", err))
     }
 
     //wird getriggert wenn man auf den delete button klickt und aktualisiert automatisch im frontend
@@ -82,7 +95,7 @@ const GiftAway = () => {
         <div style={{ display: "flex", flexDirection: "row", width: "100% " }}>
 
             <div style={{ display: "flex", height: "100vh", alignContent: "center", justifyContent: "center", width: "50%", flex: 1 }}>
-                <div style={{ height: "50%", width: "70%", marginTop: "5rem", border: "2px", borderColor: "black", backgroundColor: "wheat", padding: "2rem", borderRadius: "2rem" }}>
+                <div style={{ height: "65%", width: "70%", marginTop: "5rem", border: "2px", borderColor: "black", backgroundColor: "wheat", padding: "2rem", borderRadius: "2rem" }}>
                     <form onSubmit={submitGiftAway}>
 
                         <div className="mb-3">

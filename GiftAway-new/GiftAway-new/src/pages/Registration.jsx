@@ -12,6 +12,7 @@ const Registration = () => {
     const [mail, setMail] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
     const [password, setPassword] = useState("")
+    const [pickUpLocation, setPickUpLocation] = useState("")
     
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
@@ -32,7 +33,8 @@ const Registration = () => {
         username: username,
         mail: mail,
         phone: phoneNumber,
-        password: password
+        password: password,
+        pickUpLocation: pickUpLocation
        },
        {
         withCredentials: true
@@ -57,7 +59,7 @@ const Registration = () => {
         <>
         {showErrorPopup && <ErrorPopup message={errorMessage} onClose={closeErrorPopup} />}
         <div style={{ display: "flex", height: "100vh", alignContent: "center", justifyContent: "center" }}>
-            <div style={{ height: "50%", width: "30%", marginTop: "5rem", border: "2px", borderColor: "black", backgroundColor: "wheat", padding: "2rem", borderRadius: "2rem" }}>
+            <div style={{ height: "80%", width: "30%", marginTop: "5rem", border: "2px", borderColor: "black", backgroundColor: "wheat", padding: "2rem", borderRadius: "2rem" }}>
                 <form>
                     <div className="mb-3">
                         <label htmlFor="username" className="form-label">Username</label>
@@ -74,6 +76,10 @@ const Registration = () => {
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
                         <input type="password" className="form-control" id="password"  value={password} onChange={(e) => setPassword(e.target.value)} required/>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="pickUpLocation" className="form-label">Pickup-Location</label>
+                        <input type="pickUpLocation" className="form-control" id="pickUpLocation" value={pickUpLocation} onChange={(e) => setPickUpLocation(e.target.value)} required/>
                     </div>
                    
                     <button type="submit" onClick={registerButtonclicked} className="btn btn-primary btn-lg" style={{ marginLeft: "40%", marginTop: "20px" }}>Register</button>

@@ -7,6 +7,9 @@ const CardItems = ({ id, logo, title, description, onClaimIt, mail, phone }) => 
 
 
   const claimIt = (e) => {
+    const isConfirmed = window.confirm("Do you really want to claim this Product?");
+
+    if (isConfirmed) {
     axios.patch("http://localhost:4000/dashboard/claimit", {
 
       giftawayId: id,
@@ -21,7 +24,8 @@ const CardItems = ({ id, logo, title, description, onClaimIt, mail, phone }) => 
       })
 
       .catch(err => console.log(err))
-
+  } else {
+    console.log("Claim process was canceled.")}
   }
 
   
