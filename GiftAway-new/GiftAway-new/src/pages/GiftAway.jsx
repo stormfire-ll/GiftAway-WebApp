@@ -14,6 +14,7 @@ const GiftAway = () => {
     const [category, setCategory] = useState("")
     const [myGiftaways, setMyGiftaways] = useState([])
     const [selectedCategory, setSelectedCategory] = useState("");
+    const [pickUpLocation, setPickUpLocation] = useState("")
 
     //für giftaway route get request um sich nur deine erstellen items anzuzeigen
     useEffect(() => {
@@ -44,6 +45,7 @@ const GiftAway = () => {
         // formData.append("categoryName", category)
         formData.append("categoryName", selectedCategory);
         formData.append("image", image)
+        formData.append("image", pickUpLocation)
 
         console.log(formData)
 
@@ -96,6 +98,11 @@ const GiftAway = () => {
                         <div className="mb-3">
                             <label htmlFor="description" className="form-label">Description</label>
                             <input type="text" className="form-control" id="description" value={description} onChange={e => setDescription(e.target.value)} required />
+                        </div>
+
+                        <div className="mb-3">
+                            <label htmlFor="pickUpLocation" className="form-label">Pickup Location</label>
+                            <input type="text" className="form-control" id="pickUpLocation" value={pickUpLocation} onChange={e => setPickUpLocation(e.target.value)} required />
                         </div>
                         {/*   <div className="mb-3">
                             <label htmlFor="category" className="form-label">Category</label>

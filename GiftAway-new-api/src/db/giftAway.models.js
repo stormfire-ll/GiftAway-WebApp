@@ -26,9 +26,10 @@ const Giftaway = new mongoose.Schema({
     publisherId: {
         type: Schema.Types.ObjectId,
         ref: "User"
-    }
-
-
+    },
+    pickUpLocation: {
+        type: String,
+    },
 })
 
 module.exports = new mongoose.model('Giftaway', Giftaway)
